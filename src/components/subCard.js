@@ -5,14 +5,12 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
-import { deleteSingleSub } from '../api/subData';
+import { deleteSub } from '../api/subData';
 
 function SubCard({ subObj, onUpdate }) {
-  // FOR DELETE, WE NEED TO REMOVE THE AUTHOR AND HAVE THE VIEW RERENDER,
-  // SO WE PASS THE FUNCTION FROM THE PARENT THAT GETS THE AUTHORS
   const deleteThisSub = () => {
     if (window.confirm(`Delete ${subObj.organizationId}?`)) {
-      deleteSingleSub(subObj.firebaseKey).then(() => onUpdate());
+      deleteSub(subObj.firebaseKey).then(() => onUpdate());
     }
   };
 
@@ -24,13 +22,11 @@ function SubCard({ subObj, onUpdate }) {
         <p className="card-text bold">
           {subObj.paymentType} ${subObj.subscribed_at}
         </p>
-        {/* DYNAMIC LINK TO VIEW THE AUTHOR DETAILS  */}
         <Link href={`/author/${subObj.firebaseKey}`} passHref>
           <Button variant="primary" className="m-2">
             VIEW
           </Button>
         </Link>
-        {/* DYNAMIC LINK TO EDIT THE AUTHOR DETAILS  */}
         <Link href={`/author/edit/${subObj.firebaseKey}`} passHref>
           <Button variant="info">EDIT</Button>
         </Link>
