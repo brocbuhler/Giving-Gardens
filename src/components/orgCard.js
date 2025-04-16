@@ -15,6 +15,7 @@ export default function OrgCard({ orgObj, onUpdate }) {
   };
   console.warn(orgObj);
   // make edit and delete features only accessable by admin or orgs creator
+  console.warn(orgObj.firebaseKey);
   return (
     <Card style={{ width: '18rem', margin: '10px' }}>
       <Card.Body>

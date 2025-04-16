@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
@@ -19,17 +19,17 @@ const initialState = {
   author_id: '',
 };
 
-function OrgForm({ obj = initialState }) {
+export default function OrgForm({ obj = initialState }) {
   const [formInput, setFormInput] = useState(obj);
   // const [subs, setSubs] = useState([]);
   const router = useRouter();
   const { user } = useAuth();
 
-  // useEffect(() => {
-  //   getSub(user.uid).then(setSubs);
+  useEffect(() => {
+    // getSub(user.uid).then(setSubs);
 
-  //   if (obj.firebaseKey) setFormInput(obj);
-  // }, [obj, user]);
+    if (obj.firebaseKey) setFormInput(obj);
+  }, [obj, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,5 +92,3 @@ OrgForm.propTypes = {
     firebaseKey: PropTypes.string,
   }),
 };
-
-export default OrgForm;
