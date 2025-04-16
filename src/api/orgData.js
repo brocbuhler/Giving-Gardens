@@ -15,6 +15,19 @@ const getOrg = (uid) =>
       .catch(reject);
   });
 
+const getEveryOrg = () =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/organizations.json`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(Object.values(data)))
+      .catch(reject);
+  });
+
 const deleteOrg = (firebaseKey) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
@@ -69,4 +82,4 @@ const updateOrg = (payload) =>
       .catch(reject);
   });
 
-export { getOrg, createOrg, deleteOrg, getSingleOrg, updateOrg };
+export { getOrg, createOrg, deleteOrg, getSingleOrg, updateOrg, getEveryOrg };

@@ -16,6 +16,19 @@ const getSub = (uid) =>
       .catch(reject);
   });
 
+const getEverySub = () =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/subscriptions.json`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(Object.values(data)))
+      .catch(reject);
+  });
+
 const deleteSub = (firebaseKey) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/subscriptions/${firebaseKey}.json`, {
@@ -83,4 +96,4 @@ const getSubByOrg = (firebaseKey) =>
       .catch(reject);
   });
 
-export { getSub, createSub, deleteSub, getSingleSub, updateSub, getSubByOrg };
+export { getSub, createSub, deleteSub, getSingleSub, updateSub, getSubByOrg, getEverySub };

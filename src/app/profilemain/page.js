@@ -7,6 +7,7 @@ import { useAuth } from '@/utils/context/authContext';
 import { clientCredentials } from '@/utils/client';
 import Loading from '@/components/Loading';
 import UpdateUserData from '@/api/userData';
+import Link from 'next/link';
 
 const endpoint = clientCredentials.databaseURL;
 
@@ -64,6 +65,9 @@ export default function UserComponent() {
       <div>Name: {userProfile.name || 'N/A'}</div>
       <div>Email: {userProfile.email || 'N/A'}</div>
       <div>Last Login: {userProfile.lastLogin ? new Date(userProfile.lastLogin).toLocaleString() : 'N/A'}</div>
+      <Link className="org-btn" href="/org/new">
+        Create an Organization
+      </Link>
     </div>
   );
 }

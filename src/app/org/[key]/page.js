@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { viewOrgDetails } from '@/api/mergedData';
 
-export default function ViewBook({ params }) {
+export default function ViewOrg({ params }) {
   const [orgDetails, setOrgDetails] = useState({});
 
   // grab firebaseKey from url
@@ -24,18 +24,15 @@ export default function ViewBook({ params }) {
       </div>
       <div className="text-white ms-5 details">
         <h5>
-          {orgDetails.title} by {orgDetails.authorObject?.first_name} {orgDetails.authorObject?.last_name}
-          {orgDetails.authorObject?.favorite ? ' 🤍' : ''}
+          {orgDetails.title}
+          {orgDetails.description}
         </h5>
-        Author Email: <a href={`mailto:${orgDetails.authorObject?.email}`}>{orgDetails.authorObject?.email}</a>
-        <p>{orgDetails.description || ''}</p>
-        <hr />
-        <p>{orgDetails.sale ? `🏷️ Sale $${orgDetails.price}` : `$${orgDetails.price}`}</p>
+        <p>Organization Email: {orgDetails.email}</p>
       </div>
     </div>
   );
 }
 
-ViewBook.propTypes = {
+ViewOrg.propTypes = {
   params: PropTypes.objectOf({}).isRequired,
 };
