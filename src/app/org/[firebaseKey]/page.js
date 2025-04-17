@@ -11,7 +11,7 @@ export default function ViewOrg({ params }) {
   const [orgDetails, setOrgDetails] = useState({});
 
   // grab firebaseKey from url
-  const { key: firebaseKey } = params;
+  const { firebaseKey } = params;
   console.log('params:', params);
 
   // make call to API layer to get the data
