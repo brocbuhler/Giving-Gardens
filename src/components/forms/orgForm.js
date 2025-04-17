@@ -7,8 +7,8 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
-// import { getSub } from '../../api/subData';
 import { createOrg, updateOrg } from '../../api/orgData';
+// import { getSub } from '../../api/subData';
 
 const initialState = {
   description: '',
@@ -57,6 +57,7 @@ export default function OrgForm({ obj = initialState }) {
       <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Create'} New Organization?</h2>
 
       {/* TITLE INPUT  */}
+
       <FloatingLabel controlId="floatingInput1" label="Organization Title" className="mb-3">
         <Form.Control type="text" placeholder="Enter a title" name="title" value={formInput.title} onChange={handleChange} required />
       </FloatingLabel>

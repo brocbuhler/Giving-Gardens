@@ -2,19 +2,51 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/utils/context/authContext';
 import { clientCredentials } from '@/utils/client';
 import Loading from '@/components/Loading';
 import UpdateUserData from '@/api/userData';
 import Link from 'next/link';
+import UserProfileCard from '@/components/userCard';
+import SubCard from '@/components/subCard';
 
 const endpoint = clientCredentials.databaseURL;
 
 export default function UserComponent() {
   const [userProfile, setUserProfile] = useState({});
+  const [userSubscriptions, setUserSubscriptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user, userLoading } = useAuth();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getAllUserSubscriptions = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      const response = await fetch(`${endpoint}/subscriptions.json?orderBy="uid"&equalTo="${user.uid}"`);
+      const data = await response.json();
+
+      if (data) {
+        // Convert Firebase object to array
+        const subscriptionsArray = Object.keys(data).map((key) => ({
+          firebaseKey: key,
+          ...data[key],
+        }));
+        setUserSubscriptions(subscriptionsArray);
+      } else {
+        setUserSubscriptions([]);
+      }
+    } catch (error) {
+      console.error('Error fetching subscriptions:', error);
+      setUserSubscriptions([]);
+    }
+  }, [user]);
+
+  const handleSubscriptionUpdate = () => {
+    // Refresh the subscriptions list
+    getAllUserSubscriptions();
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -45,10 +77,11 @@ export default function UserComponent() {
         });
       }
       fetchUserData();
+      getAllUserSubscriptions();
     } else if (!userLoading) {
       setIsLoading(false);
     }
-  }, [user, userLoading]);
+  }, [user, userLoading, getAllUserSubscriptions]);
 
   if (userLoading || isLoading) {
     return <Loading />;
@@ -59,12 +92,27 @@ export default function UserComponent() {
   }
 
   return (
-    <div>
-      <div>{userProfile.photoURL && <img src={userProfile.photoURL} alt="Profile" width={100} height={100} className="rounded-full" />}</div>
-      <h1>User Profile</h1>
-      <div>Name: {userProfile.name || 'N/A'}</div>
-      <div>Email: {userProfile.email || 'N/A'}</div>
-      <div>Last Login: {userProfile.lastLogin ? new Date(userProfile.lastLogin).toLocaleString() : 'N/A'}</div>
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-4 mb-4">
+          <UserProfileCard userProfile={userProfile} />
+        </div>
+      </div>
+
+      <div className="mt-5">
+        <h2>Your Subscriptions</h2>
+        {userSubscriptions.length === 0 ? (
+          <p>You dont have any subscriptions yet.</p>
+        ) : (
+          <div className="row">
+            {userSubscriptions.map((subscription) => (
+              <div key={subscription.firebaseKey} className="col-md-4 mb-4">
+                <SubCard subObj={subscription} onUpdate={handleSubscriptionUpdate} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
       <Link className="org-btn" href="/org/new">
         Create an Organization
       </Link>
