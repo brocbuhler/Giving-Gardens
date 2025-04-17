@@ -13,10 +13,8 @@ import { createOrg, updateOrg } from '../../api/orgData';
 const initialState = {
   description: '',
   image: '',
-  price: '',
-  sale: false,
+  email: '',
   title: '',
-  author_id: '',
 };
 
 export default function OrgForm({ obj = initialState }) {
