@@ -1,14 +1,19 @@
 'use client';
 
- // any component that uses useAuth needs this because if a component directly imports useAuth, it needs to be a client component since useAuth uses React hooks.
+// any component that uses useAuth needs this because if a component directly imports useAuth, it needs to be a client component since useAuth uses React hooks.
 
 import { Button } from 'react-bootstrap';
 import { signOut } from '@/utils/auth'; // anything in the src dir, you can use the @ instead of relative paths
 import { useAuth } from '@/utils/context/authContext';
+import { getEveryOrg, getOrg } from '../api/orgData';
+import { getEverySub } from '../api/subData';
 
 function Home() {
   const { user } = useAuth();
-
+  console.warn(`Current Logged in User: ${user.displayName}`);
+  getEveryOrg().then(console.warn);
+  getEverySub().then(console.warn);
+  getOrg(user.uid).then(console.warn);
   return (
     <div
       className="text-center d-flex flex-column justify-content-center align-content-center"

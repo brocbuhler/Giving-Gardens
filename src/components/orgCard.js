@@ -1,34 +1,32 @@
 'use client';
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
+import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types';
 import { deleteOrg } from '../api/orgData';
 
-function OrgCard({ orgObj, onUpdate }) {
+export default function OrgCard({ orgObj, onUpdate }) {
   const deleteThisOrg = () => {
     if (window.confirm(`Delete ${orgObj.title}?`)) {
+      console.log(orgObj.firebaseKey);
       deleteOrg(orgObj.firebaseKey).then(() => onUpdate());
     }
   };
-
+  console.warn(orgObj);
+  // make edit and delete features only accessable by admin or orgs creator
+  console.warn(orgObj.firebaseKey);
   return (
     <Card style={{ width: '18rem', margin: '10px' }}>
-      <Card.Img variant="top" src={orgObj.image} alt={orgObj.title} style={{ height: '400px' }} />
       <Card.Body>
         <Card.Title>{orgObj.title}</Card.Title>
-        <p className="card-text bold">
-          {orgObj.email} ${orgObj.description}
-        </p>
-        {/* DYNAMIC LINK TO VIEW THE BOOK DETAILS  */}
+        <Card.Img src={orgObj.image} />
+        <p className="card-text bold">{orgObj.email}</p>
         <Link href={`/org/${orgObj.firebaseKey}`} passHref>
           <Button variant="primary" className="m-2">
-            VIEW
+            Landing page
           </Button>
         </Link>
-        {/* DYNAMIC LINK TO EDIT THE BOOK DETAILS  */}
         <Link href={`/org/edit/${orgObj.firebaseKey}`} passHref>
           <Button variant="info">EDIT</Button>
         </Link>
@@ -42,13 +40,11 @@ function OrgCard({ orgObj, onUpdate }) {
 
 OrgCard.propTypes = {
   orgObj: PropTypes.shape({
-    image: PropTypes.string,
     title: PropTypes.string,
-    email: PropTypes.string,
     description: PropTypes.string,
+    image: PropTypes.string,
+    email: PropTypes.string,
     firebaseKey: PropTypes.string,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
-
-export default OrgCard;

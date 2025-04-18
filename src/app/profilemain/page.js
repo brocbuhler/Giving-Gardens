@@ -7,6 +7,7 @@ import { useAuth } from '@/utils/context/authContext';
 import { clientCredentials } from '@/utils/client';
 import Loading from '@/components/Loading';
 import UpdateUserData from '@/api/userData';
+import Link from 'next/link';
 import UserProfileCard from '@/components/userCard';
 import SubCard from '@/components/subCard';
 
@@ -112,6 +113,9 @@ export default function UserComponent() {
           </div>
         )}
       </div>
+      <Link className="org-btn" href="/org/new">
+        Create an Organization
+      </Link>
     </div>
   );
 }

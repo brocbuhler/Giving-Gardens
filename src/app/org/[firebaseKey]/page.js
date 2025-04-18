@@ -5,18 +5,20 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { viewOrgDetails } from '@/api/mergedData';
-
-export default function ViewBook({ params }) {
+import Link from 'next/link';
+// change link to take you to partially filled out subscription page
+export default function ViewOrg({ params }) {
   const [orgDetails, setOrgDetails] = useState({});
 
   // grab firebaseKey from url
   const { firebaseKey } = params;
+  console.log('params:', params);
 
   // make call to API layer to get the data
   useEffect(() => {
     viewOrgDetails(firebaseKey).then(setOrgDetails);
   }, [firebaseKey]);
-
+  console.warn(`The Object has: ${orgDetails}`);
   return (
     <div className="mt-5 d-flex flex-wrap">
       <div className="d-flex flex-column">
@@ -24,18 +26,18 @@ export default function ViewBook({ params }) {
       </div>
       <div className="text-white ms-5 details">
         <h5>
-          {orgDetails.title} by {orgDetails.authorObject?.first_name} {orgDetails.authorObject?.last_name}
-          {orgDetails.authorObject?.favorite ? ' 🤍' : ''}
+          {orgDetails.title}
+          {orgDetails.description}
         </h5>
-        Author Email: <a href={`mailto:${orgDetails.authorObject?.email}`}>{orgDetails.authorObject?.email}</a>
-        <p>{orgDetails.description || ''}</p>
-        <hr />
-        <p>{orgDetails.sale ? `🏷️ Sale $${orgDetails.price}` : `$${orgDetails.price}`}</p>
+        <p>Organization Email: {orgDetails.email}</p>
       </div>
+      <Link className="nav-link" href="/orgmain">
+        Subscribe?
+      </Link>
     </div>
   );
 }
 
-ViewBook.propTypes = {
+ViewOrg.propTypes = {
   params: PropTypes.objectOf({}).isRequired,
 };
