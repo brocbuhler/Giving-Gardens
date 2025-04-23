@@ -1,31 +1,33 @@
 'use client';
 
+/* eslint-disable react/no-unescaped-entities */
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Form from 'react-bootstrap/Form';
-import { Button } from 'react-bootstrap';
-import { useAuth } from '../../utils/context/authContext';
-import { createOrg, updateOrg } from '../../api/orgData';
-// import { getSub } from '../../api/subData';
+import { Form, Button, Container, Card, Row, Col } from 'react-bootstrap';
+import { useAuth } from '@/utils/context/authContext';
+import { createOrg, updateOrg } from '@/api/orgData';
+import Link from 'next/link';
 
 const initialState = {
   description: '',
   image: '',
   email: '',
   title: '',
+  mission: '',
+  category: '',
+  website: '',
 };
 
 export default function OrgForm({ obj = initialState }) {
   const [formInput, setFormInput] = useState(obj);
-  // const [subs, setSubs] = useState([]);
+  const [validated, setValidated] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const { user } = useAuth();
 
   useEffect(() => {
-    // getSub(user.uid).then(setSubs);
-
     if (obj.firebaseKey) setFormInput(obj);
   }, [obj, user]);
 
@@ -37,48 +39,159 @@ export default function OrgForm({ obj = initialState }) {
     }));
   };
 
+  const getButtonText = () => {
+    if (isSubmitting) {
+      return 'Saving...';
+    }
+
+    if (obj.firebaseKey) {
+      return 'Update Organization';
+    }
+
+    return 'Create Organization';
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
+    setIsSubmitting(true);
+
     if (obj.firebaseKey) {
-      updateOrg(formInput).then(() => router.push(`/org/${obj.firebaseKey}`));
-    } else {
-      const payload = { ...formInput, uid: user.uid };
-      createOrg(payload).then(({ name }) => {
-        const patchPayload = { firebaseKey: name };
-        updateOrg(patchPayload).then(() => {
-          router.push('/');
+      updateOrg(formInput)
+        .then(() => router.push(`/org/${obj.firebaseKey}`))
+        .catch((error) => {
+          console.error('Error updating organization:', error);
+          setIsSubmitting(false);
         });
-      });
+    } else {
+      const payload = {
+        ...formInput,
+        uid: user.uid,
+        createdAt: new Date().toISOString(),
+      };
+
+      createOrg(payload)
+        .then(({ name }) => {
+          const patchPayload = { firebaseKey: name };
+          updateOrg(patchPayload).then(() => {
+            router.push('/orgmain');
+          });
+        })
+        .catch((error) => {
+          console.error('Error creating organization:', error);
+          setIsSubmitting(false);
+        });
     }
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="text-black">
-      <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Create'} New Organization?</h2>
+    <div className="org-form-page">
+      <Container className="py-5">
+        <Row className="justify-content-center">
+          <Col md={8}>
+            <Card className="border-0 shadow-sm">
+              <Card.Body className="p-4">
+                <div className="mb-4">
+                  <h2 className="mb-1">{obj.firebaseKey ? 'Update' : 'Create New'} Organization</h2>
+                  <p className="text-muted">{obj.firebaseKey ? 'Update the information for your organization below.' : 'Fill out the form below to add your organization to Giving Gardens.'}</p>
+                </div>
 
-      {/* TITLE INPUT  */}
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                  <Row>
+                    <Col md={12} className="mb-3">
+                      <Form.Group controlId="formTitle">
+                        <Form.Label>Organization Name</Form.Label>
+                        <Form.Control type="text" name="title" value={formInput.title} onChange={handleChange} placeholder="Enter organization name" required />
+                        <Form.Control.Feedback type="invalid">Please provide an organization name.</Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
 
-      <FloatingLabel controlId="floatingInput1" label="Organization Title" className="mb-3">
-        <Form.Control type="text" placeholder="Enter a title" name="title" value={formInput.title} onChange={handleChange} required />
-      </FloatingLabel>
+                    <Col md={6} className="mb-3">
+                      <Form.Group controlId="formEmail">
+                        <Form.Label>Email Address</Form.Label>
+                        <Form.Control type="email" name="email" value={formInput.email} onChange={handleChange} placeholder="Enter contact email" required />
+                        <Form.Control.Feedback type="invalid">Please provide a valid email.</Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
 
-      <FloatingLabel controlId="floatingInput1" label="Organization Email" className="mb-3">
-        <Form.Control type="text" placeholder="Enter a Email" name="email" value={formInput.email} onChange={handleChange} required />
-      </FloatingLabel>
+                    <Col md={6} className="mb-3">
+                      <Form.Group controlId="formWebsite">
+                        <Form.Label>Website (Optional)</Form.Label>
+                        <Form.Control type="url" name="website" value={formInput.website || ''} onChange={handleChange} placeholder="https://yourwebsite.com" />
+                      </Form.Group>
+                    </Col>
 
-      {/* IMAGE INPUT  */}
-      <FloatingLabel controlId="floatingInput2" label="Organization Image" className="mb-3">
-        <Form.Control type="url" placeholder="Enter an image url" name="image" value={formInput.image} onChange={handleChange} required />
-      </FloatingLabel>
+                    <Col md={12} className="mb-3">
+                      <Form.Group controlId="formImage">
+                        <Form.Label>Organization Logo/Image</Form.Label>
+                        <Form.Control type="url" name="image" value={formInput.image} onChange={handleChange} placeholder="Enter image URL" required />
+                        <Form.Control.Feedback type="invalid">Please provide an image URL.</Form.Control.Feedback>
+                        <Form.Text className="text-muted">Provide a direct link to an image of your organization's logo or a representative image.</Form.Text>
+                      </Form.Group>
+                    </Col>
 
-      {/* DESCRIPTION TEXTAREA  */}
-      <FloatingLabel controlId="floatingTextarea" label="Organization Description" className="mb-3">
-        <Form.Control as="textarea" placeholder="Description" style={{ height: '100px' }} name="description" value={formInput.description} onChange={handleChange} required />
-      </FloatingLabel>
+                    <Col md={12} className="mb-3">
+                      <Form.Group controlId="formCategory">
+                        <Form.Label>Category</Form.Label>
+                        <Form.Select name="category" value={formInput.category || ''} onChange={handleChange} required>
+                          <option value="">Select a category</option>
+                          <option value="education">Education</option>
+                          <option value="environment">Environment</option>
+                          <option value="health">Health & Wellness</option>
+                          <option value="animals">Animal Welfare</option>
+                          <option value="arts">Arts & Culture</option>
+                          <option value="humanitarian">Humanitarian Aid</option>
+                          <option value="community">Community Development</option>
+                          <option value="other">Other</option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">Please select a category.</Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
 
-      {/* SUBMIT BUTTON  */}
-      <Button type="submit">{obj.firebaseKey ? 'Update' : 'Create'} Organization</Button>
-    </Form>
+                    <Col md={12} className="mb-3">
+                      <Form.Group controlId="formDescription">
+                        <Form.Label>Organization Description</Form.Label>
+                        <Form.Control as="textarea" rows={4} name="description" value={formInput.description} onChange={handleChange} placeholder="Describe your organization" required />
+                        <Form.Control.Feedback type="invalid">Please provide a description.</Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+
+                    <Col md={12} className="mb-4">
+                      <Form.Group controlId="formMission">
+                        <Form.Label>Mission Statement (Optional)</Form.Label>
+                        <Form.Control as="textarea" rows={3} name="mission" value={formInput.mission || ''} onChange={handleChange} placeholder="Share your organization's mission" />
+                      </Form.Group>
+                    </Col>
+
+                    <Col md={12} className="d-flex justify-content-between">
+                      <Link href="/orgmain">
+                        <Button variant="outline-secondary">Cancel</Button>
+                      </Link>
+                      <Button type="submit" variant="primary" disabled={isSubmitting}>
+                        {getButtonText()}
+                      </Button>
+                    </Col>
+                  </Row>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+
+      <footer className="text-white py-4">
+        <Container className="text-center">
+          <p className="mb-0">© 2025 Giving Gardens. All rights reserved.</p>
+        </Container>
+      </footer>
+    </div>
   );
 }
 
@@ -88,6 +201,9 @@ OrgForm.propTypes = {
     image: PropTypes.string,
     email: PropTypes.string,
     title: PropTypes.string,
+    mission: PropTypes.string,
+    category: PropTypes.string,
+    website: PropTypes.string,
     firebaseKey: PropTypes.string,
   }),
 };

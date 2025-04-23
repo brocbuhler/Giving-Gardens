@@ -2,22 +2,22 @@
 
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { getSingleOrg } from '../../../../api/orgData';
-import OrgForm from '../../../../components/forms/orgForm';
+import { getSingleSub } from '@/api/subData';
+import SubForm from '@/components/forms/subForm';
 
-export default function EditOrg({ params }) {
+export default function EditSub({ params }) {
   const [editItem, setEditItem] = useState({});
   const { firebaseKey } = params;
   useEffect(() => {
     if (firebaseKey) {
-      getSingleOrg(firebaseKey).then(setEditItem);
+      getSingleSub(firebaseKey).then(setEditItem);
     }
   }, [firebaseKey]);
   console.warn(`This is the stuff: ${editItem}`);
-  return <OrgForm obj={editItem} />;
+  return <SubForm obj={editItem} />;
 }
 
-EditOrg.propTypes = {
+EditSub.propTypes = {
   params: PropTypes.shape({
     firebaseKey: PropTypes.string.isRequired,
   }).isRequired,
