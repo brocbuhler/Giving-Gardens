@@ -1,38 +1,54 @@
 'use client';
 
+import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
-import { deleteOrg } from '../api/orgData';
+import { deleteOrg } from '@/api/orgData';
+import { useAuth } from '@/utils/context/authContext';
 
 export default function OrgCard({ orgObj, onUpdate }) {
+  const { user } = useAuth();
+  const isCreator = user.uid === orgObj.uid;
+
   const deleteThisOrg = () => {
     if (window.confirm(`Delete ${orgObj.title}?`)) {
-      console.log(orgObj.firebaseKey);
       deleteOrg(orgObj.firebaseKey).then(() => onUpdate());
     }
   };
-  console.warn(orgObj);
-  // make edit and delete features only accessable by admin or orgs creator
-  console.warn(orgObj.firebaseKey);
+
   return (
-    <Card style={{ width: '18rem', margin: '10px' }}>
-      <Card.Body>
-        <Card.Title>{orgObj.title}</Card.Title>
-        <Card.Img src={orgObj.image} />
-        <p className="card-text bold">{orgObj.email}</p>
-        <Link href={`/org/${orgObj.firebaseKey}`} passHref>
-          <Button variant="primary" className="m-2">
-            Landing page
-          </Button>
-        </Link>
-        <Link href={`/org/edit/${orgObj.firebaseKey}`} passHref>
-          <Button variant="info">EDIT</Button>
-        </Link>
-        <Button variant="danger" onClick={deleteThisOrg} className="m-2">
-          DELETE
-        </Button>
+    <Card className="h-100 border-0 shadow-sm overflow-hidden org-card">
+      <div style={{ height: '180px', overflow: 'hidden' }}>
+        <Card.Img variant="top" src={orgObj.image || '/placeholder-image.png'} className="org-image" />
+      </div>
+      <Card.Body className="d-flex flex-column">
+        <Card.Title className="mb-2">{orgObj.title}</Card.Title>
+        <Card.Text className="text-muted small mb-2">{orgObj.email}</Card.Text>
+        <Card.Text className="flex-grow-1">
+          {orgObj.description?.substring(0, 100)}
+          {orgObj.description?.length > 100 ? '...' : ''}
+        </Card.Text>
+        <div className="mt-auto pt-3">
+          <Link href={`/org/${orgObj.firebaseKey}`} passHref>
+            <Button variant="primary" className="w-100 mb-2">
+              View Details
+            </Button>
+          </Link>
+          {isCreator && (
+            <div className="d-flex gap-2">
+              <Link href={`/org/edit/${orgObj.firebaseKey}`} passHref style={{ flex: 1 }}>
+                <Button variant="outline-secondary" className="w-100">
+                  Edit
+                </Button>
+              </Link>
+              <Button variant="outline-danger" onClick={deleteThisOrg} style={{ flex: 1 }}>
+                Delete
+              </Button>
+            </div>
+          )}
+        </div>
       </Card.Body>
     </Card>
   );
@@ -45,6 +61,7 @@ OrgCard.propTypes = {
     image: PropTypes.string,
     email: PropTypes.string,
     firebaseKey: PropTypes.string,
+    uid: PropTypes.string,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };

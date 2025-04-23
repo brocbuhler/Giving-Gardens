@@ -1,10 +1,201 @@
-body {
-  background: black;
-  color: white;
+:root {
+  --primary-color: #4f824f;
+  --primary-hover: #54d254;
+  --accent-color: #95cb56;
+  --secondary-color: #f8f9fa;
+  --text-color: #333333;
+  --light-gray: #e9ecef;
+  --medium-gray: #6c757d;
+  --success: #3a824b;
+  --warning: #ffc107;
+  --danger: #dc3545;
 }
 
-.org-btn {
-  border: 1px solid black;
-  background-color: brown;
-  color: green;
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: var(--text-color);
+  background-color: #fafafa;
+}
+
+/* Button styles */
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+}
+
+.btn-outline-primary {
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Card styles */
+.card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+
+/* Navigation */
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.nav-link {
+  font-weight: 500;
+}
+
+/* Hero sections */
+.hero-section {
+  background-image: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  color: white;
+  padding: 80px 0;
+  position: relative;
+}
+
+/* Optional garden-themed background elements */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background-image: url('/plant-decoration.png'); /* Replace with an actual plant decoration image */
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.2;
+  z-index: 0;
+}
+
+.hero-section h1 {
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+/* Carousel customization */
+.carousel-control-prev, .carousel-control-next {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.9;
+}
+
+.carousel-control-prev {
+  left: 10px;
+}
+
+.carousel-control-next {
+  right: 10px;
+}
+
+/* Form controls */
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(92, 184, 92, 0.25);
+}
+
+/* Custom tab navigation */
+.nav-tabs .nav-link {
+  color: var(--text-color);
+  border: none;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  background: transparent;
+}
+
+/* Organization cards */
+.org-card .card-img-top {
+  transition: transform 0.3s ease;
+}
+
+.org-card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+  background-color: var(--text-color);
+  color: white;
+  padding: 2rem 0;
+}
+
+/* Animation utilities */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 50px 0;
+    text-align: center;
+  }
+  
+  .hero-section .btn {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* Activity timeline */
+.activity-timeline li {
+  position: relative;
+}
+
+.activity-timeline li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 60px;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--light-gray);
+  z-index: 0;
+}
+
+/* Subscription badge */
+.subscription-badge {
+  background-color: white;
+  color: var(--text-color);
+  border: 1px solid var(--light-gray);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
