@@ -11,6 +11,7 @@ import { getEverySub } from '../api/subData';
 function Home() {
   const { user } = useAuth();
   console.warn(`Current Logged in User: ${user.displayName}`);
+  console.warn(`Current Users key: ${user.uid}`);
   getEveryOrg().then(console.warn);
   getEverySub().then(console.warn);
   getOrg(user.uid).then(console.warn);

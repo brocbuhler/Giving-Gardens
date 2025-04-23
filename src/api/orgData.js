@@ -84,7 +84,7 @@ const updateOrg = (payload) =>
 
 const getOrgSubs = (firebaseKey) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json?orderBy="organizationId"&equalTo="${firebaseKey}"`, {
+    fetch(`${endpoint}/subscriptions.json?orderBy="organizationId"&equalTo="${firebaseKey}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

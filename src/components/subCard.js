@@ -16,7 +16,6 @@ function SubCard({ subObj, onUpdate }) {
 
   return (
     <Card style={{ width: '18rem', margin: '10px' }}>
-      <Card.Img variant="top" src={subObj.imageUrl} alt={subObj.imageUrl} style={{ height: '400px' }} />
       <Card.Body>
         <Card.Title>{subObj.paymentAmount}</Card.Title>
         <p className="card-text bold">
@@ -40,7 +39,7 @@ function SubCard({ subObj, onUpdate }) {
 
 SubCard.propTypes = {
   subObj: PropTypes.shape({
-    organizationId: PropTypes.number,
+    organizationId: PropTypes.string,
     imageUrl: PropTypes.string,
     paymentType: PropTypes.string,
     paymentAmount: PropTypes.string,

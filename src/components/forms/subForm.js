@@ -10,9 +10,9 @@ import { useAuth } from '@/utils/context/authContext';
 import { createSub, updateSub } from '@/api/subData';
 
 const initialState = {
-  email: '',
-  image: '',
-  first_name: '',
+  paymentAmount: '',
+  paymentType: '',
+  subscribe: '',
   favorite: false,
   last_name: '',
 };
