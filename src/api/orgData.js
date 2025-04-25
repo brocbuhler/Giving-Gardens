@@ -1,6 +1,6 @@
-import { clientCredentials } from '../utils/client';
+import { firebaseConfig } from '@/utils/client';
 
-const endpoint = clientCredentials.databaseURL;
+const endpoint = firebaseConfig.databaseURL;
 
 const getOrg = (uid) =>
   new Promise((resolve, reject) => {

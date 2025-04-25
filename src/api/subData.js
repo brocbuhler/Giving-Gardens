@@ -1,7 +1,7 @@
-import { clientCredentials } from '../utils/client';
+import { firebaseConfig } from '@/utils/client';
 // API CALLS FOR BOOKS
 
-const endpoint = clientCredentials.databaseURL;
+const endpoint = firebaseConfig.databaseURL;
 
 const getSub = (uid) =>
   new Promise((resolve, reject) => {
