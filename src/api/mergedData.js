@@ -12,9 +12,9 @@ const viewSubDetails = (subFirebaseKey) =>
       .catch((error) => reject(error));
   });
 
-const viewOrgDetails = (orgsFirebaseKey) =>
+const viewOrgDetails = (firebaseKey) =>
   new Promise((resolve, reject) => {
-    Promise.all([getSingleOrg(orgsFirebaseKey), getOrgSubs(orgsFirebaseKey)])
+    Promise.all([getSingleOrg(firebaseKey), getOrgSubs(firebaseKey)])
       .then(([orgObject, orgSubsArray]) => {
         resolve({ ...orgObject, subscriptions: orgSubsArray });
       })

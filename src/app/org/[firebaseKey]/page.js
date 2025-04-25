@@ -7,15 +7,14 @@ import PropTypes from 'prop-types';
 import { viewOrgDetails } from '@/api/mergedData';
 import Link from 'next/link';
 import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
+import SubCard from '@/components/subCard';
 
 export default function ViewOrg({ params }) {
   const [orgDetails, setOrgDetails] = useState({});
   const [loading, setLoading] = useState(true);
-
   const { firebaseKey } = params;
 
-  useEffect(() => {
-    setLoading(true);
+  const viewOrgSubs = () => {
     viewOrgDetails(firebaseKey)
       .then((data) => {
         setOrgDetails(data);
@@ -25,6 +24,11 @@ export default function ViewOrg({ params }) {
         console.error('Error fetching organization details:', error);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    viewOrgSubs();
   }, [firebaseKey]);
 
   if (loading) {
@@ -92,6 +96,19 @@ export default function ViewOrg({ params }) {
             </Col>
           </Row>
         </Card>
+
+        {/* Subscriptions Section from main branch */}
+        <div className="mt-5">
+          <h3 className="mb-4">Current Subscribers</h3>
+          <div className="d-flex flex-wrap">
+            {Array.isArray(orgDetails.subscriptions) && orgDetails.subscriptions.length > 0 
+              ? orgDetails.subscriptions.map((sub) => (
+                <SubCard key={sub.firebaseKey} subObj={sub} onUpdate={viewOrgSubs} />
+              )) 
+              : <p>No subscribers</p>
+            }
+          </div>
+        </div>
 
         {orgDetails.projects && orgDetails.projects.length > 0 && (
           <div className="mt-5">
