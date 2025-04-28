@@ -81,7 +81,7 @@ export default function OrgMain() {
     return (
       <Row>
         {displayedOrganizations.map((org) => (
-          <Col key={org.Id} md={4} className="mb-4">
+          <Col key={org.id} md={4} className="mb-4">
             <OrgCard orgObj={org} onUpdate={handleUpdate} />
           </Col>
         ))}

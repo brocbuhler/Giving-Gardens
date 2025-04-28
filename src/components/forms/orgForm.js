@@ -11,10 +11,10 @@ import { createOrg, updateOrg } from '@/api/orgData';
 import Link from 'next/link';
 
 const initialState = {
-  Description: '',
-  Image: '',
-  Email: '',
-  Title: '',
+  description: '',
+  image: '',
+  email: '',
+  title: '',
   // mission: '',
   // category: '',
   // website: '',
@@ -106,17 +106,17 @@ export default function OrgForm({ obj = initialState }) {
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                   <Row>
                     <Col md={12} className="mb-3">
-                      <Form.Group controlId="formTitle">
+                      <Form.Group controlId="formtitle">
                         <Form.Label>Organization Name</Form.Label>
-                        <Form.Control type="text" name="Title" value={formInput.Title} onChange={handleChange} placeholder="Enter organization name" required />
+                        <Form.Control type="text" name="title" value={formInput.title} onChange={handleChange} placeholder="Enter organization name" required />
                         <Form.Control.Feedback type="invalid">Please provide an organization name.</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
 
                     <Col md={6} className="mb-3">
-                      <Form.Group controlId="formEmail">
-                        <Form.Label>Email Address</Form.Label>
-                        <Form.Control type="email" name="Email" value={formInput.Email} onChange={handleChange} placeholder="Enter contact email" required />
+                      <Form.Group controlId="formemail">
+                        <Form.Label>email Address</Form.Label>
+                        <Form.Control type="email" name="email" value={formInput.email} onChange={handleChange} placeholder="Enter contact email" required />
                         <Form.Control.Feedback type="invalid">Please provide a valid email.</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
@@ -129,9 +129,9 @@ export default function OrgForm({ obj = initialState }) {
                     </Col> */}
 
                     <Col md={12} className="mb-3">
-                      <Form.Group controlId="formImage">
-                        <Form.Label>Organization Logo/Image</Form.Label>
-                        <Form.Control type="url" name="Image" value={formInput.Image} onChange={handleChange} placeholder="Enter image URL" required />
+                      <Form.Group controlId="formimage">
+                        <Form.Label>Organization Logo/image</Form.Label>
+                        <Form.Control type="url" name="image" value={formInput.image} onChange={handleChange} placeholder="Enter image URL" required />
                         <Form.Control.Feedback type="invalid">Please provide an image URL.</Form.Control.Feedback>
                         <Form.Text className="text-muted">Provide a direct link to an image of your organization's logo or a representative image.</Form.Text>
                       </Form.Group>
@@ -156,9 +156,9 @@ export default function OrgForm({ obj = initialState }) {
                     </Col> */}
 
                     <Col md={12} className="mb-3">
-                      <Form.Group controlId="formDescription">
-                        <Form.Label>Organization Description</Form.Label>
-                        <Form.Control as="textarea" rows={4} Name="Description" value={formInput.Description} onChange={handleChange} placeholder="Describe your organization" required />
+                      <Form.Group controlId="formdescription">
+                        <Form.Label>Organization description</Form.Label>
+                        <Form.Control as="textarea" rows={4} Name="description" value={formInput.description} onChange={handleChange} placeholder="Describe your organization" required />
                         <Form.Control.Feedback type="invalid">Please provide a description.</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
@@ -197,10 +197,10 @@ export default function OrgForm({ obj = initialState }) {
 
 OrgForm.propTypes = {
   obj: PropTypes.shape({
-    Description: PropTypes.string,
-    Image: PropTypes.string,
-    Email: PropTypes.string,
-    Title: PropTypes.string,
+    description: PropTypes.string,
+    image: PropTypes.string,
+    email: PropTypes.string,
+    title: PropTypes.string,
     // mission: PropTypes.string,
     // category: PropTypes.string,
     // website: PropTypes.string,

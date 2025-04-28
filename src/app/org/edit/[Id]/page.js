@@ -7,18 +7,18 @@ import OrgForm from '../../../../components/forms/orgForm';
 
 export default function EditOrg({ params }) {
   const [editItem, setEditItem] = useState({});
-  const { Id } = params;
+  const { id } = params;
   useEffect(() => {
-    if (Id) {
-      getSingleOrg(Id).then(setEditItem);
+    if (id) {
+      getSingleOrg(id).then(setEditItem);
     }
-  }, [Id]);
+  }, [id]);
   console.warn(`This is the stuff: ${editItem}`);
   return <OrgForm obj={editItem} />;
 }
 
 EditOrg.propTypes = {
   params: PropTypes.shape({
-    Id: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
   }).isRequired,
 };

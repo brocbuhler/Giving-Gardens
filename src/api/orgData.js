@@ -2,9 +2,9 @@ import { firebaseConfig } from '../utils/client';
 
 const endpoint = firebaseConfig.databaseURL;
 
-const getOrg = (UserId) =>
+const getOrg = (userId) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}api/organization?orderBy="UserId"&equalTo="${UserId}"`, {
+    fetch(`${endpoint}api/organization?orderBy="userId"&equalTo="${userId}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
