@@ -12,10 +12,10 @@ import SubCard from '@/components/subCard';
 export default function ViewOrg({ params }) {
   const [orgDetails, setOrgDetails] = useState({});
   const [loading, setLoading] = useState(true);
-  const { firebaseKey } = params;
+  const { Id } = params;
 
   const viewOrgSubs = () => {
-    viewOrgDetails(firebaseKey)
+    viewOrgDetails(Id)
       .then((data) => {
         setOrgDetails(data);
         setLoading(false);
@@ -29,7 +29,7 @@ export default function ViewOrg({ params }) {
   useEffect(() => {
     setLoading(true);
     viewOrgSubs();
-  }, [firebaseKey]);
+  }, [Id]);
 
   if (loading) {
     return (
@@ -88,7 +88,7 @@ export default function ViewOrg({ params }) {
                 )}
 
                 <div className="mt-4">
-                  <Button variant="primary" className="me-2" as={Link} href={`/sub/edit/${firebaseKey}`}>
+                  <Button variant="primary" className="me-2" as={Link} href={`/sub/edit/${Id}`}>
                     Support
                   </Button>
                 </div>
@@ -100,14 +100,7 @@ export default function ViewOrg({ params }) {
         {/* Subscriptions Section from main branch */}
         <div className="mt-5">
           <h3 className="mb-4">Current Subscribers</h3>
-          <div className="d-flex flex-wrap">
-            {Array.isArray(orgDetails.subscriptions) && orgDetails.subscriptions.length > 0 
-              ? orgDetails.subscriptions.map((sub) => (
-                <SubCard key={sub.firebaseKey} subObj={sub} onUpdate={viewOrgSubs} />
-              )) 
-              : <p>No subscribers</p>
-            }
-          </div>
+          <div className="d-flex flex-wrap">{Array.isArray(orgDetails.subscriptions) && orgDetails.subscriptions.length > 0 ? orgDetails.subscriptions.map((sub) => <SubCard key={sub.Id} subObj={sub} onUpdate={viewOrgSubs} />) : <p>No subscribers</p>}</div>
         </div>
 
         {orgDetails.projects && orgDetails.projects.length > 0 && (
@@ -141,6 +134,6 @@ export default function ViewOrg({ params }) {
 
 ViewOrg.propTypes = {
   params: PropTypes.shape({
-    firebaseKey: PropTypes.string.isRequired,
+    Id: PropTypes.string.isRequired,
   }).isRequired,
 };

@@ -7,13 +7,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Container, Row, Col, Card, Button, Tabs, Tab } from 'react-bootstrap';
 import { useAuth } from '@/utils/context/authContext';
-import { clientCredentials } from '@/utils/client';
+import { firebaseConfig } from '@/utils/client';
 import Loading from '@/components/Loading';
 import UpdateUserData from '@/api/userData';
 import Link from 'next/link';
 import SubCard from '@/components/subCard';
 
-const endpoint = clientCredentials.databaseURL;
+const endpoint = firebaseConfig.databaseURL;
 
 export default function UserComponent() {
   const [userProfile, setUserProfile] = useState({});

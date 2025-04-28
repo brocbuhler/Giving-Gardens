@@ -1,9 +1,9 @@
 'use client';
 
 import PropTypes from 'prop-types';
-import { clientCredentials } from '@/utils/client';
+import { firebaseConfig } from '@/utils/client';
 
-const endpoint = clientCredentials.databaseURL;
+const endpoint = firebaseConfig.databaseURL;
 
 function UpdateUserData({ uid, displayName, email, photoURL }) {
   if (!uid) return null;

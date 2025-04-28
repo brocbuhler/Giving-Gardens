@@ -51,6 +51,7 @@ export default function OrgMain() {
 
   const renderContent = () => {
     if (loading) {
+      console.log(displayedOrganizations.map((o) => o.firebaseKey));
       return (
         <div className="text-center py-5">
           <p>Loading organizations...</p>
@@ -80,7 +81,7 @@ export default function OrgMain() {
     return (
       <Row>
         {displayedOrganizations.map((org) => (
-          <Col key={org.firebaseKey} md={4} className="mb-4">
+          <Col key={org.Id} md={4} className="mb-4">
             <OrgCard orgObj={org} onUpdate={handleUpdate} />
           </Col>
         ))}
