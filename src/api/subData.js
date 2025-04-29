@@ -1,5 +1,4 @@
-import { firebaseConfig } from '../utils/client';
-// API CALLS FOR BOOKS
+import { firebaseConfig } from '@/utils/client';
 
 const endpoint = firebaseConfig.databaseURL;
 
