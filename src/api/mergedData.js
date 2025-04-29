@@ -1,9 +1,9 @@
 import { deleteOrg, getOrgSubs, getSingleOrg } from './orgData';
 import { deleteSub, getSingleSub } from './subData';
 
-const viewSubDetails = (subFirebaseKey) =>
+const viewSubDetails = (subId) =>
   new Promise((resolve, reject) => {
-    getSingleSub(subFirebaseKey)
+    getSingleSub(subId)
       .then((subObject) => {
         getSingleSub(subObject.organizationId).then((orgObject) => {
           resolve({ orgObject, ...subObject });
@@ -12,9 +12,9 @@ const viewSubDetails = (subFirebaseKey) =>
       .catch((error) => reject(error));
   });
 
-const viewOrgDetails = (firebaseKey) =>
+const viewOrgDetails = (id) =>
   new Promise((resolve, reject) => {
-    Promise.all([getSingleOrg(firebaseKey), getOrgSubs(firebaseKey)])
+    Promise.all([getSingleOrg(id), getOrgSubs(id)])
       .then(([orgObject, orgSubsArray]) => {
         resolve({ ...orgObject, subscriptions: orgSubsArray });
       })

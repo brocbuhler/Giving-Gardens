@@ -7,18 +7,18 @@ import OrgForm from '../../../../components/forms/orgForm';
 
 export default function EditOrg({ params }) {
   const [editItem, setEditItem] = useState({});
-  const { firebaseKey } = params;
+  const { id } = params;
   useEffect(() => {
-    if (firebaseKey) {
-      getSingleOrg(firebaseKey).then(setEditItem);
+    if (id) {
+      getSingleOrg(id).then(setEditItem);
     }
-  }, [firebaseKey]);
+  }, [id]);
   console.warn(`This is the stuff: ${editItem}`);
   return <OrgForm obj={editItem} />;
 }
 
 EditOrg.propTypes = {
   params: PropTypes.shape({
-    firebaseKey: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
   }).isRequired,
 };

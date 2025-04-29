@@ -63,7 +63,7 @@ function Home() {
               <Carousel.Item key={idx}>
                 <Row>
                   {recentOrganizations.slice(idx * 3, idx * 3 + 3).map((org) => (
-                    <Col md={4} key={org.firebaseKey}>
+                    <Col md={4} key={org.id}>
                       <Card className="h-100 border-0 shadow-sm">
                         <Card.Img variant="top" src={org.image || '/placeholder-image.png'} style={{ height: '200px', objectFit: 'cover' }} />
                         <Card.Body>
@@ -72,7 +72,7 @@ function Home() {
                             {org.description?.substring(0, 100)}
                             {org.description?.length > 100 ? '...' : ''}
                           </Card.Text>
-                          <Link href={`/org/${org.firebaseKey}`} passHref>
+                          <Link href={`/org/${org.id}`} passHref>
                             <Button variant="outline-primary" style={{ borderColor: colors.primary, color: colors.primary }}>
                               Learn More
                             </Button>

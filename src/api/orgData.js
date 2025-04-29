@@ -2,9 +2,9 @@ import { firebaseConfig } from '@/utils/client';
 
 const endpoint = firebaseConfig.databaseURL;
 
-const getOrg = (uid) =>
+const getOrg = (userId) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json?orderBy="uid"&equalTo="${uid}"`, {
+    fetch(`${endpoint}api/organization?orderBy="userId"&equalTo="${userId}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -17,7 +17,8 @@ const getOrg = (uid) =>
 
 const getEveryOrg = () =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json`, {
+    console.warn(`this is my api endpoint`, endpoint);
+    fetch(`${endpoint}api/organization`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -30,7 +31,7 @@ const getEveryOrg = () =>
 
 const deleteOrg = (firebaseKey) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
+    fetch(`${endpoint}api/organization/${firebaseKey}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ const deleteOrg = (firebaseKey) =>
 
 const getSingleOrg = (firebaseKey) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
+    fetch(`${endpoint}api/organization/${firebaseKey}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ const getSingleOrg = (firebaseKey) =>
 
 const createOrg = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json`, {
+    fetch(`${endpoint}api/organization`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +71,7 @@ const createOrg = (payload) =>
 
 const updateOrg = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations/${payload.firebaseKey}.json`, {
+    fetch(`${endpoint}api/organization/${payload.firebaseKey}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ const updateOrg = (payload) =>
 
 const getOrgSubs = (firebaseKey) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/subscriptions.json?orderBy="organizationId"&equalTo="${firebaseKey}"`, {
+    fetch(`${endpoint}api/subscription.json?orderBy="OrganizationId"&equalTo="${firebaseKey}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -15,9 +15,9 @@ const initialState = {
   image: '',
   email: '',
   title: '',
-  mission: '',
-  category: '',
-  website: '',
+  // mission: '',
+  // category: '',
+  // website: '',
 };
 
 export default function OrgForm({ obj = initialState }) {
@@ -28,7 +28,7 @@ export default function OrgForm({ obj = initialState }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (obj.firebaseKey) setFormInput(obj);
+    if (obj.id) setFormInput(obj);
   }, [obj, user]);
 
   const handleChange = (e) => {
@@ -44,7 +44,7 @@ export default function OrgForm({ obj = initialState }) {
       return 'Saving...';
     }
 
-    if (obj.firebaseKey) {
+    if (obj.id) {
       return 'Update Organization';
     }
 
@@ -63,9 +63,9 @@ export default function OrgForm({ obj = initialState }) {
 
     setIsSubmitting(true);
 
-    if (obj.firebaseKey) {
+    if (obj.id) {
       updateOrg(formInput)
-        .then(() => router.push(`/org/${obj.firebaseKey}`))
+        .then(() => router.push(`/org/${obj.id}`))
         .catch((error) => {
           console.error('Error updating organization:', error);
           setIsSubmitting(false);
@@ -73,13 +73,13 @@ export default function OrgForm({ obj = initialState }) {
     } else {
       const payload = {
         ...formInput,
-        uid: user.uid,
-        createdAt: new Date().toISOString(),
+        userId: user.uid,
+        // createdAt: new Date().toISOString(),
       };
 
       createOrg(payload)
         .then(({ name }) => {
-          const patchPayload = { firebaseKey: name };
+          const patchPayload = { id: name };
           updateOrg(patchPayload).then(() => {
             router.push('/orgmain');
           });
@@ -99,14 +99,14 @@ export default function OrgForm({ obj = initialState }) {
             <Card className="border-0 shadow-sm">
               <Card.Body className="p-4">
                 <div className="mb-4">
-                  <h2 className="mb-1">{obj.firebaseKey ? 'Update' : 'Create New'} Organization</h2>
-                  <p className="text-muted">{obj.firebaseKey ? 'Update the information for your organization below.' : 'Fill out the form below to add your organization to Giving Gardens.'}</p>
+                  <h2 className="mb-1">{obj.id ? 'Update' : 'Create New'} Organization</h2>
+                  <p className="text-muted">{obj.id ? 'Update the information for your organization below.' : 'Fill out the form below to add your organization to Giving Gardens.'}</p>
                 </div>
 
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                   <Row>
                     <Col md={12} className="mb-3">
-                      <Form.Group controlId="formTitle">
+                      <Form.Group controlid="formtitle">
                         <Form.Label>Organization Name</Form.Label>
                         <Form.Control type="text" name="title" value={formInput.title} onChange={handleChange} placeholder="Enter organization name" required />
                         <Form.Control.Feedback type="invalid">Please provide an organization name.</Form.Control.Feedback>
@@ -114,31 +114,31 @@ export default function OrgForm({ obj = initialState }) {
                     </Col>
 
                     <Col md={6} className="mb-3">
-                      <Form.Group controlId="formEmail">
+                      <Form.Group controlid="formemail">
                         <Form.Label>Email Address</Form.Label>
                         <Form.Control type="email" name="email" value={formInput.email} onChange={handleChange} placeholder="Enter contact email" required />
                         <Form.Control.Feedback type="invalid">Please provide a valid email.</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
-
+                    {/* 
                     <Col md={6} className="mb-3">
-                      <Form.Group controlId="formWebsite">
+                      <Form.Group controlid="formWebsite">
                         <Form.Label>Website (Optional)</Form.Label>
                         <Form.Control type="url" name="website" value={formInput.website || ''} onChange={handleChange} placeholder="https://yourwebsite.com" />
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col md={12} className="mb-3">
-                      <Form.Group controlId="formImage">
-                        <Form.Label>Organization Logo/Image</Form.Label>
+                      <Form.Group controlid="formimage">
+                        <Form.Label>Organization Logo/image</Form.Label>
                         <Form.Control type="url" name="image" value={formInput.image} onChange={handleChange} placeholder="Enter image URL" required />
                         <Form.Control.Feedback type="invalid">Please provide an image URL.</Form.Control.Feedback>
                         <Form.Text className="text-muted">Provide a direct link to an image of your organization's logo or a representative image.</Form.Text>
                       </Form.Group>
                     </Col>
 
-                    <Col md={12} className="mb-3">
-                      <Form.Group controlId="formCategory">
+                    {/* <Col md={12} className="mb-3">
+                      <Form.Group controlid="formCategory">
                         <Form.Label>Category</Form.Label>
                         <Form.Select name="category" value={formInput.category || ''} onChange={handleChange} required>
                           <option value="">Select a category</option>
@@ -153,22 +153,22 @@ export default function OrgForm({ obj = initialState }) {
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">Please select a category.</Form.Control.Feedback>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col md={12} className="mb-3">
-                      <Form.Group controlId="formDescription">
-                        <Form.Label>Organization Description</Form.Label>
+                      <Form.Group controlid="formdescription">
+                        <Form.Label>Organization description</Form.Label>
                         <Form.Control as="textarea" rows={4} name="description" value={formInput.description} onChange={handleChange} placeholder="Describe your organization" required />
                         <Form.Control.Feedback type="invalid">Please provide a description.</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
 
-                    <Col md={12} className="mb-4">
-                      <Form.Group controlId="formMission">
+                    {/* <Col md={12} className="mb-4">
+                      <Form.Group controlid="formMission">
                         <Form.Label>Mission Statement (Optional)</Form.Label>
                         <Form.Control as="textarea" rows={3} name="mission" value={formInput.mission || ''} onChange={handleChange} placeholder="Share your organization's mission" />
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col md={12} className="d-flex justify-content-between">
                       <Link href="/orgmain">
@@ -201,9 +201,9 @@ OrgForm.propTypes = {
     image: PropTypes.string,
     email: PropTypes.string,
     title: PropTypes.string,
-    mission: PropTypes.string,
-    category: PropTypes.string,
-    website: PropTypes.string,
-    firebaseKey: PropTypes.string,
+    // mission: PropTypes.string,
+    // category: PropTypes.string,
+    // website: PropTypes.string,
+    id: PropTypes.string,
   }),
 };

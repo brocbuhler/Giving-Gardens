@@ -29,7 +29,7 @@ function SubCard({ subObj, onUpdate }) {
   return (
     <Card className="h-100 border-0 shadow-sm">
       <div className="position-relative">
-        <Card.Img variant="top" src={subObj.imageUrl || '/placeholder-image.png'} alt={subObj.organizationName || 'Organization'} style={{ height: '160px', objectFit: 'cover' }} />
+        <Card.Img variant="top" src={subObj.imageUrl || '/placeholder-image.png'} alt={subObj.organizationName || ' No image available for organization'} style={{ height: '160px', objectFit: 'cover' }} />
         <div className="position-absolute top-0 end-0 m-2" style={{ zIndex: 1 }}>
           <Badge bg="light" text="dark" className="py-2 px-3 shadow-sm">
             ${subObj.paymentAmount}
@@ -62,7 +62,7 @@ function SubCard({ subObj, onUpdate }) {
         </div>
       </Card.Body>
       <Card.Footer className="bg-white border-0 text-center text-muted py-3" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-        <small>Next payment on {subObj.nextPaymentDate || 'the same day next month'}</small>
+        <small>Using {subObj.paymentType || 'to pay'}</small>
       </Card.Footer>
     </Card>
   );

@@ -1,11 +1,10 @@
 import { firebaseConfig } from '@/utils/client';
-// API CALLS FOR BOOKS
 
 const endpoint = firebaseConfig.databaseURL;
 
-const getSub = (uid) =>
+const getSub = (userId) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/subscriptions.json?orderBy="uid"&equalTo="${uid}"`, {
+    fetch(`${endpoint}api/subscription?orderBy="userId"&equalTo="${userId}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -18,7 +17,7 @@ const getSub = (uid) =>
 
 const getEverySub = () =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/subscriptions.json`, {
+    fetch(`${endpoint}api/subscription`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -29,9 +28,9 @@ const getEverySub = () =>
       .catch(reject);
   });
 
-const deleteSub = (firebaseKey) =>
+const deleteSub = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/subscriptions/${firebaseKey}.json`, {
+    fetch(`${endpoint}api/subscription/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -42,9 +41,9 @@ const deleteSub = (firebaseKey) =>
       .catch(reject);
   });
 
-const getSingleSub = (firebaseKey) =>
+const getSingleSub = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/subscriptions/${firebaseKey}.json`, {
+    fetch(`${endpoint}api/subscription/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -57,7 +56,7 @@ const getSingleSub = (firebaseKey) =>
 
 const createSub = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/subscriptions.json`, {
+    fetch(`${endpoint}api/subscription`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +70,7 @@ const createSub = (payload) =>
 
 const updateSub = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/subscriptions/${payload.firebaseKey}.json`, {
+    fetch(`${endpoint}api/subscription/${payload.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -83,9 +82,9 @@ const updateSub = (payload) =>
       .catch(reject);
   });
 
-const getSubByOrg = (firebaseKey) =>
+const getSubByOrg = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/subscriptions.json?orderBy="organizationId"&equalTo="${firebaseKey}"`, {
+    fetch(`${endpoint}api/subscription?orderBy="OrganizationId"&equalTo="${id}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
