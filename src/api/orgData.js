@@ -29,9 +29,9 @@ const getEveryOrg = () =>
       .catch(reject);
   });
 
-const deleteOrg = (firebaseKey) =>
+const deleteOrg = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}api/organization/${firebaseKey}`, {
+    fetch(`${endpoint}api/organization/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -42,9 +42,9 @@ const deleteOrg = (firebaseKey) =>
       .catch(reject);
   });
 
-const getSingleOrg = (firebaseKey) =>
+const getSingleOrg = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}api/organization/${firebaseKey}`, {
+    fetch(`${endpoint}api/organization/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const createOrg = (payload) =>
 
 const updateOrg = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}api/organization/${payload.firebaseKey}`, {
+    fetch(`${endpoint}api/organization/${payload.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -83,9 +83,9 @@ const updateOrg = (payload) =>
       .catch(reject);
   });
 
-const getOrgSubs = (firebaseKey) =>
+const getOrgSubs = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}api/subscription.json?orderBy="OrganizationId"&equalTo="${firebaseKey}"`, {
+    fetch(`${endpoint}api/subscription.json?orderBy="OrganizationId"&equalTo="${id}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
