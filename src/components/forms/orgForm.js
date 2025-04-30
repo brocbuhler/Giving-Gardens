@@ -78,8 +78,9 @@ export default function OrgForm({ obj = initialState }) {
       };
 
       createOrg(payload)
-        .then(({ name }) => {
-          const patchPayload = { id: name };
+        .then((res) => {
+          console.log('createOrg response:', res);
+          const patchPayload = { ...formInput, id: res.id };
           updateOrg(patchPayload).then(() => {
             router.push('/orgmain');
           });
@@ -106,7 +107,7 @@ export default function OrgForm({ obj = initialState }) {
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                   <Row>
                     <Col md={12} className="mb-3">
-                      <Form.Group controlid="formtitle">
+                      <Form.Group controlId="formtitle">
                         <Form.Label>Organization Name</Form.Label>
                         <Form.Control type="text" name="title" value={formInput.title} onChange={handleChange} placeholder="Enter organization name" required />
                         <Form.Control.Feedback type="invalid">Please provide an organization name.</Form.Control.Feedback>
@@ -114,7 +115,7 @@ export default function OrgForm({ obj = initialState }) {
                     </Col>
 
                     <Col md={6} className="mb-3">
-                      <Form.Group controlid="formemail">
+                      <Form.Group controlId="formemail">
                         <Form.Label>Email Address</Form.Label>
                         <Form.Control type="email" name="email" value={formInput.email} onChange={handleChange} placeholder="Enter contact email" required />
                         <Form.Control.Feedback type="invalid">Please provide a valid email.</Form.Control.Feedback>
@@ -122,14 +123,14 @@ export default function OrgForm({ obj = initialState }) {
                     </Col>
                     {/* 
                     <Col md={6} className="mb-3">
-                      <Form.Group controlid="formWebsite">
+                      <Form.Group controlId="formWebsite">
                         <Form.Label>Website (Optional)</Form.Label>
                         <Form.Control type="url" name="website" value={formInput.website || ''} onChange={handleChange} placeholder="https://yourwebsite.com" />
                       </Form.Group>
                     </Col> */}
 
                     <Col md={12} className="mb-3">
-                      <Form.Group controlid="formimage">
+                      <Form.Group controlId="formimage">
                         <Form.Label>Organization Logo/image</Form.Label>
                         <Form.Control type="url" name="image" value={formInput.image} onChange={handleChange} placeholder="Enter image URL" required />
                         <Form.Control.Feedback type="invalid">Please provide an image URL.</Form.Control.Feedback>
@@ -138,7 +139,7 @@ export default function OrgForm({ obj = initialState }) {
                     </Col>
 
                     {/* <Col md={12} className="mb-3">
-                      <Form.Group controlid="formCategory">
+                      <Form.Group controlId="formCategory">
                         <Form.Label>Category</Form.Label>
                         <Form.Select name="category" value={formInput.category || ''} onChange={handleChange} required>
                           <option value="">Select a category</option>
@@ -156,7 +157,7 @@ export default function OrgForm({ obj = initialState }) {
                     </Col> */}
 
                     <Col md={12} className="mb-3">
-                      <Form.Group controlid="formdescription">
+                      <Form.Group controlId="formdescription">
                         <Form.Label>Organization description</Form.Label>
                         <Form.Control as="textarea" rows={4} name="description" value={formInput.description} onChange={handleChange} placeholder="Describe your organization" required />
                         <Form.Control.Feedback type="invalid">Please provide a description.</Form.Control.Feedback>
@@ -164,7 +165,7 @@ export default function OrgForm({ obj = initialState }) {
                     </Col>
 
                     {/* <Col md={12} className="mb-4">
-                      <Form.Group controlid="formMission">
+                      <Form.Group controlId="formMission">
                         <Form.Label>Mission Statement (Optional)</Form.Label>
                         <Form.Control as="textarea" rows={3} name="mission" value={formInput.mission || ''} onChange={handleChange} placeholder="Share your organization's mission" />
                       </Form.Group>

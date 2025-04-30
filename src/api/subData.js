@@ -71,7 +71,7 @@ const createSub = (payload) =>
 const updateSub = (payload) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}api/subscription/${payload.id}`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
