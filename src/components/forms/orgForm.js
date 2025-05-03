@@ -15,9 +15,9 @@ const initialState = {
   image: '',
   email: '',
   title: '',
-  // mission: '',
-  // category: '',
-  // website: '',
+  mission: '',
+  category: '',
+  website: '',
 };
 
 export default function OrgForm({ obj = initialState }) {
@@ -74,7 +74,7 @@ export default function OrgForm({ obj = initialState }) {
       const payload = {
         ...formInput,
         userId: user.uid,
-        // createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
       };
 
       createOrg(payload)
@@ -121,13 +121,13 @@ export default function OrgForm({ obj = initialState }) {
                         <Form.Control.Feedback type="invalid">Please provide a valid email.</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
-                    {/* 
+
                     <Col md={6} className="mb-3">
                       <Form.Group controlId="formWebsite">
                         <Form.Label>Website (Optional)</Form.Label>
                         <Form.Control type="url" name="website" value={formInput.website || ''} onChange={handleChange} placeholder="https://yourwebsite.com" />
                       </Form.Group>
-                    </Col> */}
+                    </Col>
 
                     <Col md={12} className="mb-3">
                       <Form.Group controlId="formimage">
@@ -138,10 +138,10 @@ export default function OrgForm({ obj = initialState }) {
                       </Form.Group>
                     </Col>
 
-                    {/* <Col md={12} className="mb-3">
+                    <Col md={12} className="mb-3">
                       <Form.Group controlId="formCategory">
                         <Form.Label>Category</Form.Label>
-                        <Form.Select name="category" value={formInput.category || ''} onChange={handleChange} required>
+                        <Form.Select name="categoryName" value={formInput.categoryName || ''} onChange={handleChange} required>
                           <option value="">Select a category</option>
                           <option value="education">Education</option>
                           <option value="environment">Environment</option>
@@ -154,7 +154,7 @@ export default function OrgForm({ obj = initialState }) {
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">Please select a category.</Form.Control.Feedback>
                       </Form.Group>
-                    </Col> */}
+                    </Col>
 
                     <Col md={12} className="mb-3">
                       <Form.Group controlId="formdescription">
@@ -164,12 +164,12 @@ export default function OrgForm({ obj = initialState }) {
                       </Form.Group>
                     </Col>
 
-                    {/* <Col md={12} className="mb-4">
+                    <Col md={12} className="mb-4">
                       <Form.Group controlId="formMission">
                         <Form.Label>Mission Statement (Optional)</Form.Label>
                         <Form.Control as="textarea" rows={3} name="mission" value={formInput.mission || ''} onChange={handleChange} placeholder="Share your organization's mission" />
                       </Form.Group>
-                    </Col> */}
+                    </Col>
 
                     <Col md={12} className="d-flex justify-content-between">
                       <Link href="/orgmain">
@@ -202,9 +202,9 @@ OrgForm.propTypes = {
     image: PropTypes.string,
     email: PropTypes.string,
     title: PropTypes.string,
-    // mission: PropTypes.string,
-    // category: PropTypes.string,
-    // website: PropTypes.string,
+    mission: PropTypes.string,
+    categoryName: PropTypes.string,
+    website: PropTypes.string,
     id: PropTypes.string,
   }),
 };

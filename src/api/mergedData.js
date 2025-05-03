@@ -11,12 +11,12 @@ const viewSubDetails = (subId) =>
       })
       .catch((error) => reject(error));
   });
-
+// merge call edited to account for back end change back after fix
 const viewOrgDetails = (id) =>
   new Promise((resolve, reject) => {
-    Promise.all([getSingleOrg(id), getOrgSubs(id)])
-      .then(([orgObject, orgSubsArray]) => {
-        resolve({ ...orgObject, subscriptions: orgSubsArray });
+    Promise.all([getSingleOrg(id)])
+      .then(([orgObject]) => {
+        resolve({ ...orgObject });
       })
       .catch((error) => reject(error));
   });

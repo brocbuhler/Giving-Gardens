@@ -44,6 +44,8 @@ const deleteOrg = (id) =>
 
 const getSingleOrg = (id) =>
   new Promise((resolve, reject) => {
+    console.log(`this is the id im trying to fetch`, id);
+    console.log(`Fetching: ${endpoint}api/organization/${id}`);
     fetch(`${endpoint}api/organization/${id}`, {
       method: 'GET',
       headers: {
@@ -51,7 +53,7 @@ const getSingleOrg = (id) =>
       },
     })
       .then((response) => response.json())
-      .then((data) => resolve(data))
+      .then((data) => resolve(data[0]))
       .catch(reject);
   });
 
@@ -85,14 +87,14 @@ const updateOrg = (payload) =>
 
 const getOrgSubs = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}api/subscription.json?orderBy="OrganizationId"&equalTo="${id}"`, {
+    fetch(`${endpoint}api/subscription.json?orderBy="organizationId"&equalTo="${id}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((response) => response.json())
-      .then((data) => resolve(Object.values(data)))
+      .then((data) => resolve(Object.values(data[0])))
       .catch(reject);
   });
 export { getOrg, createOrg, deleteOrg, getSingleOrg, updateOrg, getEveryOrg, getOrgSubs };

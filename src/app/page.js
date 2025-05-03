@@ -31,7 +31,7 @@ function Home() {
         setLoading(false);
       }
     };
-
+    console.log(`this is my userId:`, user.uid);
     fetchOrganizations();
   }, []);
 

@@ -12,6 +12,7 @@ import Loading from '@/components/Loading';
 import UpdateUserData from '@/api/userData';
 import Link from 'next/link';
 import SubCard from '@/components/subCard';
+import { deleteOrg } from '../../api/orgData';
 
 const endpoint = firebaseConfig.databaseURL;
 
@@ -34,12 +35,12 @@ export default function UserComponent() {
     if (!user) return;
 
     try {
-      const response = await fetch(`${endpoint}/subscriptions.json?orderBy="uid"&equalTo="${user.uid}"`);
+      const response = await fetch(`${endpoint}api/subscription?orderBy="userId"&equalTo="${user.uid}"`);
       const data = await response.json();
 
       if (data) {
         const subscriptionsArray = Object.keys(data).map((key) => ({
-          firebaseKey: key,
+          id: key,
           ...data[key],
         }));
         setUserSubscriptions(subscriptionsArray);
@@ -56,12 +57,12 @@ export default function UserComponent() {
     if (!user) return;
 
     try {
-      const response = await fetch(`${endpoint}/organizations.json?orderBy="uid"&equalTo="${user.uid}"`);
+      const response = await fetch(`${endpoint}api/organization?orderBy="userId"&equalTo="${user.uid}"`);
       const data = await response.json();
 
       if (data) {
         const orgsArray = Object.keys(data).map((key) => ({
-          firebaseKey: key,
+          id: key,
           ...data[key],
         }));
         setUserOrganizations(orgsArray);
@@ -84,7 +85,7 @@ export default function UserComponent() {
 
       setIsLoading(true);
       try {
-        const response = await fetch(`${endpoint}/users/${user.uid}.json`);
+        const response = await fetch(`${endpoint}api/user/${user.uid}`);
         const userData = await response.json();
 
         if (userData) {
@@ -121,6 +122,12 @@ export default function UserComponent() {
   if (!user) {
     return <div>Please log in to view your profile</div>;
   }
+
+  const deleteOrganization = (delOrg) => {
+    console.log('this is the org I want to delete', delOrg);
+    deleteOrg(delOrg.id);
+    setUserOrganizations((prevOrganizations) => prevOrganizations.filter((org) => org.id !== delOrg.id));
+  };
 
   return (
     <div className="profile-page">
@@ -209,7 +216,7 @@ export default function UserComponent() {
                 ) : (
                   <Row>
                     {userSubscriptions.map((subscription) => (
-                      <Col key={subscription.firebaseKey} md={6} className="mb-4">
+                      <Col key={subscription.id} md={6} className="mb-4">
                         <SubCard subObj={subscription} onUpdate={handleSubscriptionUpdate} />
                       </Col>
                     ))}
@@ -236,23 +243,26 @@ export default function UserComponent() {
                 ) : (
                   <Row>
                     {userOrganizations.map((org) => (
-                      <Col key={org.firebaseKey} md={6} className="mb-4">
+                      <Col key={org.id} md={6} className="mb-4">
                         <Card className="h-100 border-0 shadow-sm overflow-hidden">
                           <Card.Img variant="top" src={org.image || '/placeholder-image.png'} alt={org.title} style={{ height: '140px', objectFit: 'cover' }} />
                           <Card.Body>
                             <Card.Title>{org.title}</Card.Title>
                             <Card.Text className="small text-muted">Created: {org.createdAt ? new Date(org.createdAt).toLocaleDateString() : 'N/A'}</Card.Text>
                             <div className="d-flex gap-2 mt-3">
-                              <Link href={`/org/${org.firebaseKey}`} passHref style={{ flex: 1 }}>
+                              <Link href={`/org/${org.id}`} passHref style={{ flex: 1 }}>
                                 <Button variant="primary" className="w-100" style={{ backgroundColor: colors.primary, borderColor: colors.primary }}>
                                   View
                                 </Button>
                               </Link>
-                              <Link href={`/org/edit/${org.firebaseKey}`} passHref style={{ flex: 1 }}>
+                              <Link href={`/org/edit/${org.id}`} passHref style={{ flex: 1 }}>
                                 <Button variant="outline-secondary" className="w-100">
                                   Edit
                                 </Button>
                               </Link>
+                              <Button variant="outline-danger" onClick={() => deleteOrganization(org)} className="w-100">
+                                Delete
+                              </Button>
                             </div>
                           </Card.Body>
                         </Card>

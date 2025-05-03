@@ -14,7 +14,7 @@ export default function OrgCard({ orgObj, onUpdate }) {
 
   const deleteThisOrg = () => {
     if (window.confirm(`Delete ${orgObj.title}?`)) {
-      deleteOrg(orgObj.firebaseKey).then(() => onUpdate());
+      deleteOrg(orgObj.id).then(() => onUpdate());
     }
   };
 
@@ -31,14 +31,14 @@ export default function OrgCard({ orgObj, onUpdate }) {
           {orgObj.description?.length > 100 ? '...' : ''}
         </Card.Text>
         <div className="mt-auto pt-3">
-          <Link href={`/org/${orgObj.firebaseKey}`} passHref>
+          <Link href={`/org/${orgObj.id}`} passHref>
             <Button variant="primary" className="w-100 mb-2">
               View Details
             </Button>
           </Link>
           {isCreator && (
             <div className="d-flex gap-2">
-              <Link href={`/org/edit/${orgObj.firebaseKey}`} passHref style={{ flex: 1 }}>
+              <Link href={`/org/edit/${orgObj.id}`} passHref style={{ flex: 1 }}>
                 <Button variant="outline-secondary" className="w-100">
                   Edit
                 </Button>
@@ -60,7 +60,7 @@ OrgCard.propTypes = {
     description: PropTypes.string,
     image: PropTypes.string,
     email: PropTypes.string,
-    firebaseKey: PropTypes.string,
+    id: PropTypes.string,
     uid: PropTypes.string,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
