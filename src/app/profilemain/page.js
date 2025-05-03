@@ -157,11 +157,6 @@ export default function UserComponent() {
                 </div>
 
                 <div className="d-grid gap-2">
-                  <Link href="/profile/edit" passHref>
-                    <Button variant="outline-primary" className="w-100">
-                      Edit Profile
-                    </Button>
-                  </Link>
                   <Link href="/org/new" passHref>
                     <Button variant="primary" className="w-100">
                       Create Organization

@@ -16,7 +16,7 @@ function UpdateUserData({ uid, displayName, email, photoURL }) {
     lastLogin: Date.now(),
   };
 
-  const userUrl = `${endpoint}/users/${uid}.json`;
+  const userUrl = `${endpoint}api/user/${uid}`;
 
   return (
     fetch(userUrl, {

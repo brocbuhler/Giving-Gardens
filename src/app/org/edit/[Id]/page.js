@@ -8,12 +8,18 @@ import OrgForm from '../../../../components/forms/orgForm';
 export default function EditOrg({ params }) {
   const [editItem, setEditItem] = useState({});
   const { id } = params;
+
   useEffect(() => {
     if (id) {
       getSingleOrg(id).then(setEditItem);
     }
   }, [id]);
-  console.warn(`This is the stuff: ${editItem}`);
+
+  useEffect(() => {
+    console.log(`this is my edit ID`, id);
+    console.warn('Updated editItem:', editItem);
+  }, [editItem]);
+
   return <OrgForm obj={editItem} />;
 }
 
