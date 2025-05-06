@@ -13,17 +13,18 @@ import { getSingleOrg } from '@/api/orgData';
 import Link from 'next/link';
 
 const initialState = {
-  paymentAmount: '10',
-  paymentType: 'monthly',
+  paymentAmount: '10.00',
+  payFrequency: 'monthly',
+  paymentType: 'visa',
   subscribed_at: '',
   organizationId: '',
-  organizationName: '',
-  imageUrl: '',
+  title: '',
+  image: '',
   description: '',
 };
 
 function SubForm({ obj = initialState, params }) {
-  const [formInput, setFormInput] = useState(obj);
+  const [formInput, setFormInput] = useState({ ...initialState });
   const [organization, setOrganization] = useState(null);
   const [validated, setValidated] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,7 +34,13 @@ function SubForm({ obj = initialState, params }) {
 
   useEffect(() => {
     if (obj.firebaseKey) {
-      setFormInput(obj);
+      setFormInput({
+        ...initialState,
+        ...obj,
+        paymentAmount: obj.paymentAmount || initialState.paymentAmount,
+        payFrequency: obj.payFrequency || initialState.payFrequency,
+        paymentType: obj.paymentType || initialState.paymentType,
+      });
       setIsLoading(false);
     } else if (params?.orgId) {
       getSingleOrg(params.orgId)
@@ -42,9 +49,9 @@ function SubForm({ obj = initialState, params }) {
           setFormInput({
             ...initialState,
             organizationId: params.orgId,
-            organizationName: orgData.title,
-            imageUrl: orgData.image,
-            description: `Monthly donation to ${orgData.title}`,
+            title: orgData.title,
+            image: orgData.image,
+            description: `${initialState.payFrequency} donation to ${orgData.title}`,
           });
           setIsLoading(false);
         })
@@ -72,6 +79,15 @@ function SubForm({ obj = initialState, params }) {
         ...prevState,
         [name]: formattedValue,
       }));
+    } else if (name === 'payFrequency') {
+      // Update description when payment frequency changes
+      const newDescription = `${value} donation to ${organization?.title || formInput.title || 'Selected Organization'}`;
+
+      setFormInput((prevState) => ({
+        ...prevState,
+        [name]: value,
+        description: newDescription,
+      }));
     } else {
       setFormInput((prevState) => ({
         ...prevState,
@@ -80,11 +96,11 @@ function SubForm({ obj = initialState, params }) {
     }
   };
 
-  // Calculate the next payment date based on the subscription type
-  const getNextPaymentDate = (startDate, paymentType) => {
+  // Calculate the next payment date based on the subscription frequency
+  const getNextPaymentDate = (startDate, payFrequency) => {
     const date = new Date(startDate);
 
-    switch (paymentType) {
+    switch (payFrequency) {
       case 'weekly':
         date.setDate(date.getDate() + 7);
         break;
@@ -118,27 +134,52 @@ function SubForm({ obj = initialState, params }) {
 
     const currentDate = new Date().toISOString();
 
+    console.log('Form Input:', formInput);
+
     if (obj.firebaseKey) {
-      updateSub(formInput)
+      // Make sure we're including the firebaseKey in the update
+      const updatePayload = {
+        ...formInput,
+        firebaseKey: obj.firebaseKey,
+      };
+
+      updateSub(updatePayload)
         .then(() => router.push('/profilemain'))
         .catch((error) => {
           console.error('Error updating subscription:', error);
           setIsSubmitting(false);
         });
     } else {
+      // Get the next payment date
+      const nextPaymentDate = getNextPaymentDate(currentDate, formInput.payFrequency);
+
+      // Create a payload that matches the C# model
       const payload = {
-        ...formInput,
-        uid: user.uid,
-        subscribed_at: currentDate,
-        nextPaymentDate: getNextPaymentDate(currentDate, formInput.paymentType),
+        // Match C# property names (PascalCase)
+        UserId: user.uid,
+        // Get organizationId from formInput which was set in useEffect
+        OrganizationId: parseInt(formInput.organizationId, 10),
+        // Format date for C# DateTime
+        Subscribed_at: currentDate,
+        // Keep PaymentType as-is since it matches the C# model
+        PaymentType: formInput.paymentType,
+        // Convert string to number for PaymentAmount
+        PaymentAmount: parseFloat(formInput.paymentAmount),
+        // Store additional data if your C# model has been updated to include these
+        PayFrequency: formInput.payFrequency,
+        NextPaymentDate: nextPaymentDate,
+        // These fields might not be in your C# model, but including for completeness
+        Title: formInput.title,
+        Image: formInput.image,
+        Description: formInput.description,
       };
 
+      console.log('Sending payload to API:', payload);
+
       createSub(payload)
-        .then(({ name }) => {
-          const patchPayload = { firebaseKey: name };
-          updateSub(patchPayload).then(() => {
-            router.push('/profilemain');
-          });
+        .then((response) => {
+          console.log('Create subscription response:', response);
+          router.push('/profilemain');
         })
         .catch((error) => {
           console.error('Error creating subscription:', error);
@@ -147,7 +188,6 @@ function SubForm({ obj = initialState, params }) {
     }
   };
 
-  // Function to determine button text based on state
   const getButtonText = () => {
     if (isSubmitting) {
       return 'Processing...';
@@ -188,7 +228,7 @@ function SubForm({ obj = initialState, params }) {
                       <img src={organization.image} alt={organization.title} style={{ width: '60px', height: '60px', objectFit: 'cover' }} className="me-3 rounded" />
                       <div>
                         <h5 className="mb-1">{organization.title}</h5>
-                        <p className="text-muted mb-0">{organization.category}</p>
+                        <p className="text-muted mb-0">{organization.categoryName}</p>
                       </div>
                     </Card.Body>
                   </Card>
@@ -209,14 +249,29 @@ function SubForm({ obj = initialState, params }) {
                     </Col>
 
                     <Col md={12} className="mb-4">
-                      <Form.Group controlId="formPaymentType">
+                      <Form.Group controlId="formPayFrequency">
                         <Form.Label>Donation Frequency</Form.Label>
-                        <Form.Select name="paymentType" value={formInput.paymentType} onChange={handleChange} required>
+                        <Form.Select name="payFrequency" value={formInput.payFrequency} onChange={handleChange} required>
                           <option value="weekly">Weekly</option>
                           <option value="monthly">Monthly</option>
                           <option value="quarterly">Quarterly</option>
                           <option value="yearly">Yearly</option>
                         </Form.Select>
+                        <Form.Text className="text-muted">Select how often you want to make this donation.</Form.Text>
+                      </Form.Group>
+                    </Col>
+
+                    <Col md={12} className="mb-4">
+                      <Form.Group controlId="formPaymentType">
+                        <Form.Label>Payment Method</Form.Label>
+                        <Form.Select name="paymentType" value={formInput.paymentType} onChange={handleChange} required>
+                          <option value="visa">Visa</option>
+                          <option value="mastercard">Mastercard</option>
+                          <option value="paypal">PayPal</option>
+                          <option value="cryptocurrency">Cryptocurrency</option>
+                          <option value="debit">Debit</option>
+                        </Form.Select>
+                        <Form.Text className="text-muted">Choose your preferred payment method.</Form.Text>
                       </Form.Group>
                     </Col>
 
@@ -225,12 +280,14 @@ function SubForm({ obj = initialState, params }) {
                         <div className="d-flex justify-content-between align-items-center">
                           <div>
                             <h5 className="mb-0">
-                              ${formInput.paymentAmount} {formInput.paymentType}
+                              ${formInput.paymentAmount} {formInput.payFrequency}
                             </h5>
-                            <p className="text-muted mb-0">Supporting: {organization?.title || formInput.organizationName || 'Selected Organization'}</p>
+                            <p className="text-muted mb-0">Supporting: {organization?.title || formInput.title || 'Selected Organization'}</p>
+                            <p className="text-muted mb-0">Payment Method: {formInput.paymentType.charAt(0).toUpperCase() + formInput.paymentType.slice(1)}</p>
                           </div>
                           <div>
-                            <img src="/credit-card-icons.png" alt="Payment methods" style={{ height: '24px' }} />
+                            {/* Replace with text to avoid missing image error */}
+                            <span className="text-muted">{formInput.paymentType.charAt(0).toUpperCase() + formInput.paymentType.slice(1)}</span>
                           </div>
                         </div>
                       </Card>
@@ -264,10 +321,11 @@ function SubForm({ obj = initialState, params }) {
 SubForm.propTypes = {
   obj: PropTypes.shape({
     paymentAmount: PropTypes.string,
+    payFrequency: PropTypes.string,
     paymentType: PropTypes.string,
     organizationId: PropTypes.string,
-    organizationName: PropTypes.string,
-    imageUrl: PropTypes.string,
+    title: PropTypes.string,
+    image: PropTypes.string,
     description: PropTypes.string,
     firebaseKey: PropTypes.string,
   }),
