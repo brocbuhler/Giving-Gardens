@@ -51,7 +51,8 @@ export default function OrgMain() {
 
   const renderContent = () => {
     if (loading) {
-      console.log(displayedOrganizations.map((o) => o.firebaseKey));
+      console.log(displayedOrganizations);
+      console.log('this is my user Id', user.uid);
       return (
         <div className="text-center py-5">
           <p>Loading organizations...</p>

@@ -87,7 +87,7 @@ const updateOrg = (payload) =>
 
 const getOrgSubs = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}api/subscription?orderBy="organizationId"&equalTo="${id}"`, {
+    fetch(`${endpoint}api/subscription/user?orderBy="organizationId"&equalTo="${id}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

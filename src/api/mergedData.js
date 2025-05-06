@@ -1,5 +1,5 @@
 import { deleteOrg, getOrgSubs, getSingleOrg } from './orgData';
-import { deleteSub, getSingleSub } from './subData';
+import { deleteSub, getSingleSub, getSubByOrg } from './subData';
 
 const viewSubDetails = (subId) =>
   new Promise((resolve, reject) => {
@@ -14,7 +14,7 @@ const viewSubDetails = (subId) =>
 // merge call edited to account for back end change back after fix
 const viewOrgDetails = (id) =>
   new Promise((resolve, reject) => {
-    Promise.all([getSingleOrg(id)])
+    Promise.all([getSingleOrg(id), getSubByOrg(id)])
       .then(([orgObject]) => {
         resolve({ ...orgObject });
       })
