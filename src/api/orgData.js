@@ -66,7 +66,12 @@ const createOrg = (payload) =>
       },
       body: JSON.stringify(payload),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
+      })
       .then((data) => resolve(data))
       .catch(reject);
   });

@@ -58,6 +58,7 @@ export default function UserComponent() {
 
     try {
       const response = await fetch(`${endpoint}api/organization/user/${user.uid}`);
+
       console.log(`is response okay?`, response);
       const data = await response.json();
 
