@@ -57,7 +57,7 @@ export default function UserComponent() {
     if (!user) return;
 
     try {
-      const response = await fetch(`${endpoint}api/organization?orderBy="userId"&equalTo="${user.uid}"`);
+      const response = await fetch(`${endpoint}api/organization/user/${user.uid}`);
       console.log(`is response okay?`, response);
       const data = await response.json();
 
