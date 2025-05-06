@@ -58,6 +58,8 @@ export default function UserComponent() {
 
     try {
       const response = await fetch(`${endpoint}api/organization/user/${user.uid}`);
+
+      console.log(`is response okay?`, response);
       const data = await response.json();
 
       if (data) {
@@ -128,7 +130,7 @@ export default function UserComponent() {
     deleteOrg(delOrg.id);
     setUserOrganizations((prevOrganizations) => prevOrganizations.filter((org) => org.id !== delOrg.id));
   };
-
+  console.log(userOrganizations);
   return (
     <div className="profile-page">
       <Container className="py-5">
