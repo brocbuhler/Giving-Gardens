@@ -16,7 +16,7 @@ const initialState = {
   email: '',
   title: '',
   mission: '',
-  category: '',
+  categoryName: '',
   website: '',
 };
 

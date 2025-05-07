@@ -56,16 +56,34 @@ const getSingleSub = (id) =>
 
 const createSub = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}api/subscription`, {
+    console.log('Creating subscription with payload:', payload);
+
+    fetch(`${endpoint}/api/subscription`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     })
-      .then((response) => response.json())
-      .then((data) => resolve(data))
-      .catch(reject);
+      .then((response) => {
+        console.log('Server response status:', response.status);
+
+        if (!response.ok) {
+          return response.text().then((text) => {
+            console.error('Error response text:', text);
+            throw new Error(`Server returned ${response.status}: ${text.substring(0, 150)}...`);
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Create subscription response:', data);
+        resolve(data);
+      })
+      .catch((error) => {
+        console.error('Create subscription error:', error);
+        reject(error);
+      });
   });
 
 const updateSub = (payload) =>

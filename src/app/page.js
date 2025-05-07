@@ -1,6 +1,6 @@
-/* eslint-disable react/no-array-index-key */
-
 'use client';
+
+/* eslint-disable react/no-array-index-key */
 
 import React, { useState, useEffect } from 'react';
 import { Button, Container, Row, Col, Card, Carousel } from 'react-bootstrap';
