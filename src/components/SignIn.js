@@ -1,8 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-unknown-property */
 import React from 'react';
 import { Button, Container, Row, Col, Card } from 'react-bootstrap';
-import { signIn } from '../utils/auth';
+import { signIn } from '@/utils/auth';
 
 function Signin() {
   const colors = {
@@ -55,7 +56,7 @@ function Signin() {
                     justifyContent: 'center',
                   }}
                 >
-                  <p className="text-center">Donation Illustration Placeholder</p>
+                  <img src="https://img.pikbest.com/png-images/20241030/a-beuty-big-flower-logo-desing-_11032256.png!sw800" alt="Flower Logo" style={{ width: '600px', height: '600px', objectFit: 'cover', display: 'flex' }} />
                 </div>
               </div>
             </Col>
