@@ -82,7 +82,6 @@ body {
   right: 0;
   width: 150px;
   height: 150px;
-  background-image: url('/plant-decoration.png'); /* Replace with an actual plant decoration image */
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.2;

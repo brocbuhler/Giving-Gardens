@@ -63,6 +63,10 @@ export default function ViewOrg({ params }) {
                     <h1 className="mb-2">{orgDetails.title}</h1>
                     <p className="text-muted">
                       <i className="bi bi-envelope me-2" />
+                      {orgDetails.website}
+                    </p>
+                    <p className="text-muted">
+                      <i className="bi bi-envelope me-2" />
                       {orgDetails.email}
                     </p>
                   </div>

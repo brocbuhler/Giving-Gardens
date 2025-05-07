@@ -25,7 +25,7 @@ export default function OrgCard({ orgObj, onUpdate }) {
       </div>
       <Card.Body className="d-flex flex-column">
         <Card.Title className="mb-2">{orgObj.title}</Card.Title>
-        <Card.Text className="text-muted small mb-2">{orgObj.email}</Card.Text>
+        <Card.Text className="text-muted small mb-2">{orgObj.website}</Card.Text>
         <Card.Text className="flex-grow-1">
           {orgObj.description?.substring(0, 100)}
           {orgObj.description?.length > 100 ? '...' : ''}
@@ -59,7 +59,7 @@ OrgCard.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
     image: PropTypes.string,
-    email: PropTypes.string,
+    website: PropTypes.string,
     id: PropTypes.string,
     uid: PropTypes.string,
   }).isRequired,

@@ -51,7 +51,7 @@ function SubCard({ subObj, onUpdate }) {
         </Card.Text>
         <Card.Text>{subObj.description || 'You are supporting this organization with a recurring donation.'}</Card.Text>
         <div className="d-flex gap-2 mt-3">
-          <Link href={`/org/${subObj.organizationId}`} passHref style={{ flex: 2 }}>
+          <Link href={`/org/${subObj.organizationId}`} passHref style={{ flex: 3 }}>
             <Button
               variant="primary"
               className="w-100"
@@ -61,6 +61,11 @@ function SubCard({ subObj, onUpdate }) {
               }}
             >
               View Organization
+            </Button>
+          </Link>
+          <Link href={`/sub/edit/${subObj.id}`} passHref style={{ flex: 1 }}>
+            <Button variant="outline-secondary" className="w-100">
+              Edit
             </Button>
           </Link>
           <Button variant="outline-danger" onClick={deleteThisSub} style={{ flex: 1 }}>
