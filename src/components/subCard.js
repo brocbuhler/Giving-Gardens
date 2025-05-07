@@ -19,7 +19,7 @@ function SubCard({ subObj, onUpdate }) {
 
   const deleteThisSub = () => {
     if (window.confirm(`Cancel this subscription?`)) {
-      deleteSub(subObj.firebaseKey).then(() => onUpdate());
+      deleteSub(subObj.id).then(() => onUpdate());
     }
   };
 
@@ -29,16 +29,23 @@ function SubCard({ subObj, onUpdate }) {
   return (
     <Card className="h-100 border-0 shadow-sm">
       <div className="position-relative">
-        <Card.Img variant="top" src={subObj.imageUrl || '/placeholder-image.png'} alt={subObj.organizationName || ' No image available for organization'} style={{ height: '160px', objectFit: 'cover' }} />
         <div className="position-absolute top-0 end-0 m-2" style={{ zIndex: 1 }}>
           <Badge bg="light" text="dark" className="py-2 px-3 shadow-sm">
             ${subObj.paymentAmount}
-            <span className="ms-1 small text-muted">/{subObj.paymentType || 'month'}</span>
+            <span className="ms-1 small text-muted">/{subObj.payFrequency || 'month'}</span>
           </Badge>
         </div>
       </div>
       <Card.Body>
-        <Card.Title className="mb-1">{subObj.organizationName || 'Organization Subscription'}</Card.Title>
+        <Card.Title className="mb-1">
+          {subObj.organizationId ? (
+            subObj.organizationId
+          ) : (
+            <>
+              Subscribed <span style={{ color: 'green' }}>✔️</span>
+            </>
+          )}
+        </Card.Title>
         <Card.Text className="text-muted small mb-3">
           <i className="bi bi-calendar me-1" /> Started: {formattedDate}
         </Card.Text>
@@ -78,7 +85,8 @@ SubCard.propTypes = {
     subscribed_at: PropTypes.string,
     nextPaymentDate: PropTypes.string,
     description: PropTypes.string,
-    firebaseKey: PropTypes.string,
+    id: PropTypes.string,
+    payFrequency: PropTypes.string,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
