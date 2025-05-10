@@ -15,8 +15,11 @@ const viewSubDetails = (subId) =>
 const viewOrgDetails = (id) =>
   new Promise((resolve, reject) => {
     Promise.all([getSingleOrg(id), getSubByOrg(id)])
-      .then(([orgObject]) => {
-        resolve({ ...orgObject });
+      .then(([orgObject, subData]) => {
+        resolve({
+          ...orgObject,
+          subscriptions: subData,
+        });
       })
       .catch((error) => reject(error));
   });

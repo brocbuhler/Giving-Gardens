@@ -1,14 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { deleteSub } from '@/api/subData';
 import { Badge } from 'react-bootstrap';
+import { getSingleOrg } from '../api/orgData';
 
 function SubCard({ subObj, onUpdate }) {
+  const [orgName, setOrgName] = useState('');
   // Theme colors
   const colors = {
     primary: '#5cb85c', // Light green
@@ -22,6 +24,18 @@ function SubCard({ subObj, onUpdate }) {
       deleteSub(subObj.id).then(() => onUpdate());
     }
   };
+
+  useEffect(() => {
+    const fetchOrg = async () => {
+      try {
+        const organization = await getSingleOrg(subObj.organizationId);
+        setOrgName(organization.title);
+      } catch (error) {
+        console.error('Failed to fetch organization:', error);
+      }
+    };
+    fetchOrg();
+  }, [subObj.organizationId]);
 
   // Format date
   const formattedDate = subObj.subscribed_at ? new Date(subObj.subscribed_at).toLocaleDateString() : 'N/A';
@@ -37,14 +51,11 @@ function SubCard({ subObj, onUpdate }) {
         </div>
       </div>
       <Card.Body>
-        <Card.Title className="mb-1">
-          {subObj.organizationId ? (
-            subObj.organizationId
-          ) : (
-            <>
-              Subscribed <span style={{ color: 'green' }}>✔️</span>
-            </>
-          )}
+        <Card.Title className="mb-1 fs-6">
+          <>
+            {orgName}
+            <span style={{ color: 'green' }}>✔️</span>
+          </>
         </Card.Title>
         <Card.Text className="text-muted small mb-3">
           <i className="bi bi-calendar me-1" /> Started: {formattedDate}

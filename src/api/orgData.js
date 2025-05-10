@@ -4,7 +4,7 @@ const endpoint = firebaseConfig.databaseURL;
 
 const getOrg = (userId) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}api/organization?orderBy="userId"&equalTo="${userId}"`, {
+    fetch(`${endpoint}api/organization/user/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
