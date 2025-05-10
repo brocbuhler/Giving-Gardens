@@ -58,7 +58,7 @@ const createSub = (payload) =>
   new Promise((resolve, reject) => {
     console.log('Creating subscription with payload:', payload);
 
-    fetch(`${endpoint}/api/subscription`, {
+    fetch(`${endpoint}api/subscription`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

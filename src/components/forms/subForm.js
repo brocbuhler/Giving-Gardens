@@ -33,7 +33,7 @@ function SubForm({ obj = initialState, params }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (obj.firebaseKey) {
+    if (obj.id) {
       setFormInput({
         ...initialState,
         ...obj,
@@ -136,11 +136,10 @@ function SubForm({ obj = initialState, params }) {
 
     console.log('Form Input:', formInput);
 
-    if (obj.firebaseKey) {
-      // Make sure we're including the firebaseKey in the update
+    if (obj.id) {
       const updatePayload = {
         ...formInput,
-        firebaseKey: obj.firebaseKey,
+        id: obj.id,
       };
 
       updateSub(updatePayload)
@@ -153,22 +152,14 @@ function SubForm({ obj = initialState, params }) {
       // Get the next payment date
       const nextPaymentDate = getNextPaymentDate(currentDate, formInput.payFrequency);
 
-      // Create a payload that matches the C# model
       const payload = {
-        // Match C# property names (PascalCase)
         UserId: user.uid,
-        // Get organizationId from formInput which was set in useEffect
         OrganizationId: parseInt(formInput.organizationId, 10),
-        // Format date for C# DateTime
         Subscribed_at: currentDate,
-        // Keep PaymentType as-is since it matches the C# model
         PaymentType: formInput.paymentType,
-        // Convert string to number for PaymentAmount
         PaymentAmount: parseFloat(formInput.paymentAmount),
-        // Store additional data if your C# model has been updated to include these
         PayFrequency: formInput.payFrequency,
         NextPaymentDate: nextPaymentDate,
-        // These fields might not be in your C# model, but including for completeness
         Title: formInput.title,
         Image: formInput.image,
         Description: formInput.description,
@@ -193,7 +184,7 @@ function SubForm({ obj = initialState, params }) {
       return 'Processing...';
     }
 
-    if (obj.firebaseKey) {
+    if (obj.id) {
       return 'Update Subscription';
     }
 
@@ -218,8 +209,8 @@ function SubForm({ obj = initialState, params }) {
             <Card className="border-0 shadow-sm">
               <Card.Body className="p-4">
                 <div className="mb-4">
-                  <h2 className="mb-1">{obj.firebaseKey ? 'Update Subscription' : 'Support This Organization'}</h2>
-                  <p className="text-muted">{obj.firebaseKey ? 'Update your donation details below.' : 'Set up your recurring donation to make a lasting impact.'}</p>
+                  <h2 className="mb-1">{obj.id ? 'Update Subscription' : 'Support This Organization'}</h2>
+                  <p className="text-muted">{obj.id ? 'Update your donation details below.' : 'Set up your recurring donation to make a lasting impact.'}</p>
                 </div>
 
                 {organization && (
@@ -327,7 +318,7 @@ SubForm.propTypes = {
     title: PropTypes.string,
     image: PropTypes.string,
     description: PropTypes.string,
-    firebaseKey: PropTypes.string,
+    id: PropTypes.string,
   }),
   params: PropTypes.shape({
     orgId: PropTypes.string,
