@@ -8,15 +8,18 @@ import { viewOrgDetails } from '@/api/mergedData';
 import Link from 'next/link';
 import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import SubCard from '@/components/subCard';
+import { useAuth } from '@/utils/context/authContext';
 
 export default function ViewOrg({ params }) {
   const [orgDetails, setOrgDetails] = useState({});
   const [loading, setLoading] = useState(true);
   const { Id } = params;
+  const { user } = useAuth();
 
   const viewOrgSubs = () => {
     viewOrgDetails(Id)
       .then((data) => {
+        console.log('Fetched organization details:', data);
         setOrgDetails(data);
         setLoading(false);
       })
@@ -104,7 +107,7 @@ export default function ViewOrg({ params }) {
         {/* Subscriptions Section from main branch */}
         <div className="mt-5">
           <h3 className="mb-4">Current Subscribers</h3>
-          <div className="d-flex flex-wrap">{Array.isArray(orgDetails.subscriptions) && orgDetails.subscriptions.length > 0 ? orgDetails.subscriptions.map((sub) => <SubCard key={sub.Id} subObj={sub} onUpdate={viewOrgSubs} />) : <p>No subscribers</p>}</div>
+          <div className="d-flex flex-wrap">{Array.isArray(orgDetails.subscriptions) && orgDetails.subscriptions.filter((sub) => sub.userId === user.uid).length > 0 ? orgDetails.subscriptions.filter((sub) => sub.userId === user.uid).map((sub) => <SubCard key={sub.Id} subObj={sub} onUpdate={viewOrgSubs} />) : <p>No subscriptions for this user</p>}</div>
         </div>
 
         {orgDetails.projects && orgDetails.projects.length > 0 && (
