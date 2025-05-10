@@ -257,7 +257,7 @@ export default function UserComponent() {
                                   Edit
                                 </Button>
                               </Link>
-                              <Button variant="outline-danger" style={{ flex: 1 }} onClick={() => deleteOrganization(org)} className="w-100">
+                              <Button variant="outline-danger" onClick={() => deleteOrganization(org)} className="w-100">
                                 Delete
                               </Button>
                             </div>
