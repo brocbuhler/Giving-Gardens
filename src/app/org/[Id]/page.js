@@ -95,7 +95,7 @@ export default function ViewOrg({ params }) {
                 )}
 
                 <div className="mt-4">
-                  <Button variant="primary" className="me-2" as={Link} href={`/sub/edit/${Id}`}>
+                  <Button variant="primary" className="me-2" as={Link} href={`/sub/new/${Id}`}>
                     Support
                   </Button>
                 </div>
