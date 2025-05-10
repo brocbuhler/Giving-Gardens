@@ -10,7 +10,7 @@ import { Badge } from 'react-bootstrap';
 import { getSingleOrg } from '../api/orgData';
 
 function SubCard({ subObj, onUpdate }) {
-  const [orgName, setOrgName] = useState({});
+  const [orgName, setOrgName] = useState('');
   // Theme colors
   const colors = {
     primary: '#5cb85c', // Light green
@@ -26,8 +26,15 @@ function SubCard({ subObj, onUpdate }) {
   };
 
   useEffect(() => {
-    const organization = getSingleOrg(subObj.organizationId);
-    setOrgName(organization.title);
+    const fetchOrg = async () => {
+      try {
+        const organization = await getSingleOrg(subObj.organizationId);
+        setOrgName(organization.title);
+      } catch (error) {
+        console.error('Failed to fetch organization:', error);
+      }
+    };
+    fetchOrg();
   }, [subObj.organizationId]);
 
   // Format date
@@ -44,14 +51,11 @@ function SubCard({ subObj, onUpdate }) {
         </div>
       </div>
       <Card.Body>
-        <Card.Title className="mb-1">
-          {orgName ? (
-            subObj.organizationId
-          ) : (
-            <>
-              Subscribed <span style={{ color: 'green' }}>✔️</span>
-            </>
-          )}
+        <Card.Title className="mb-1 fs-6">
+          <>
+            {orgName}
+            <span style={{ color: 'green' }}>✔️</span>
+          </>
         </Card.Title>
         <Card.Text className="text-muted small mb-3">
           <i className="bi bi-calendar me-1" /> Started: {formattedDate}

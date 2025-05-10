@@ -33,7 +33,7 @@ function SubForm({ obj = initialState, params }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (obj.firebaseKey) {
+    if (obj.id) {
       setFormInput({
         ...initialState,
         ...obj,
@@ -136,11 +136,11 @@ function SubForm({ obj = initialState, params }) {
 
     console.log('Form Input:', formInput);
 
-    if (obj.firebaseKey) {
-      // Make sure we're including the firebaseKey in the update
+    if (obj.id) {
+      // Make sure we're including the id in the update
       const updatePayload = {
         ...formInput,
-        firebaseKey: obj.firebaseKey,
+        id: obj.id,
       };
 
       updateSub(updatePayload)
@@ -193,7 +193,7 @@ function SubForm({ obj = initialState, params }) {
       return 'Processing...';
     }
 
-    if (obj.firebaseKey) {
+    if (obj.id) {
       return 'Update Subscription';
     }
 
@@ -218,8 +218,8 @@ function SubForm({ obj = initialState, params }) {
             <Card className="border-0 shadow-sm">
               <Card.Body className="p-4">
                 <div className="mb-4">
-                  <h2 className="mb-1">{obj.firebaseKey ? 'Update Subscription' : 'Support This Organization'}</h2>
-                  <p className="text-muted">{obj.firebaseKey ? 'Update your donation details below.' : 'Set up your recurring donation to make a lasting impact.'}</p>
+                  <h2 className="mb-1">{obj.id ? 'Update Subscription' : 'Support This Organization'}</h2>
+                  <p className="text-muted">{obj.id ? 'Update your donation details below.' : 'Set up your recurring donation to make a lasting impact.'}</p>
                 </div>
 
                 {organization && (
@@ -327,7 +327,7 @@ SubForm.propTypes = {
     title: PropTypes.string,
     image: PropTypes.string,
     description: PropTypes.string,
-    firebaseKey: PropTypes.string,
+    id: PropTypes.string,
   }),
   params: PropTypes.shape({
     orgId: PropTypes.string,
