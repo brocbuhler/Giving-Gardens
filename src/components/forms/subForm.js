@@ -137,7 +137,7 @@ function SubForm({ obj = initialState, params }) {
     console.log('Form Input:', formInput);
 
     if (obj.id) {
-      // Make sure we're including the id in the update
+
       const updatePayload = {
         ...formInput,
         id: obj.id,
@@ -153,22 +153,14 @@ function SubForm({ obj = initialState, params }) {
       // Get the next payment date
       const nextPaymentDate = getNextPaymentDate(currentDate, formInput.payFrequency);
 
-      // Create a payload that matches the C# model
       const payload = {
-        // Match C# property names (PascalCase)
         UserId: user.uid,
-        // Get organizationId from formInput which was set in useEffect
         OrganizationId: parseInt(formInput.organizationId, 10),
-        // Format date for C# DateTime
         Subscribed_at: currentDate,
-        // Keep PaymentType as-is since it matches the C# model
         PaymentType: formInput.paymentType,
-        // Convert string to number for PaymentAmount
         PaymentAmount: parseFloat(formInput.paymentAmount),
-        // Store additional data if your C# model has been updated to include these
         PayFrequency: formInput.payFrequency,
         NextPaymentDate: nextPaymentDate,
-        // These fields might not be in your C# model, but including for completeness
         Title: formInput.title,
         Image: formInput.image,
         Description: formInput.description,
