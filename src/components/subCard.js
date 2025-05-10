@@ -1,14 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { deleteSub } from '@/api/subData';
 import { Badge } from 'react-bootstrap';
+import { getSingleOrg } from '../api/orgData';
 
 function SubCard({ subObj, onUpdate }) {
+  const [orgName, setOrgName] = useState({});
   // Theme colors
   const colors = {
     primary: '#5cb85c', // Light green
@@ -22,6 +24,11 @@ function SubCard({ subObj, onUpdate }) {
       deleteSub(subObj.id).then(() => onUpdate());
     }
   };
+
+  useEffect(() => {
+    const organization = getSingleOrg(subObj.organizationId);
+    setOrgName(organization.title);
+  }, [subObj.organizationId]);
 
   // Format date
   const formattedDate = subObj.subscribed_at ? new Date(subObj.subscribed_at).toLocaleDateString() : 'N/A';
@@ -38,7 +45,7 @@ function SubCard({ subObj, onUpdate }) {
       </div>
       <Card.Body>
         <Card.Title className="mb-1">
-          {subObj.organizationId ? (
+          {orgName ? (
             subObj.organizationId
           ) : (
             <>
