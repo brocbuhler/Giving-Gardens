@@ -9,32 +9,42 @@ export default function NavBar() {
   const { user } = useAuth();
 
   return (
-    <Navbar collapseOnSelect expand="lg" className="py-3" style={{ backgroundColor: '#5cb85c' }} variant="dark">
+    <Navbar collapseOnSelect expand="lg" className="py-3" style={{ backgroundColor: 'var(--navbar-bg)' }} variant="dark" sticky="top">
       <Container>
         <Link passHref href="/" className="navbar-brand">
-          Giving Gardens
+          <div className="d-flex align-items-center">
+            <div className="navbar-logo-icon">🌱</div>
+            <span>Giving Gardens</span>
+          </div>
         </Link>
+
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="mx-auto">
             <Link className="nav-link" href="/orgmain">
               Organizations
             </Link>
             <Link className="nav-link" href="/profilemain">
-              Profile
+              My Profile
+            </Link>
+            <Link className="nav-link" href="/org/new">
+              Create Organization
             </Link>
           </Nav>
 
           {user && (
-            <div className="d-flex align-items-center me-2">
-              {user.photoURL && <Image src={user.photoURL} alt="Profile" width={30} height={30} roundedCircle className="me-2 border border-light" />}
-              <span className="text-white me-3">{user.displayName}</span>
+            <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center me-3">
+                {user.photoURL ? <Image src={user.photoURL} alt="Profile" width={36} height={36} roundedCircle className="navbar-profile-img" /> : <div className="navbar-profile-placeholder">{user.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}</div>}
+                <span className="text-white ms-2 d-none d-md-inline">{user.displayName}</span>
+              </div>
+
+              <Button variant="light" size="sm" onClick={signOut} className="btn-sign-out">
+                Sign Out
+              </Button>
             </div>
           )}
-
-          <Button variant="danger" onClick={signOut}>
-            Sign Out
-          </Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>
