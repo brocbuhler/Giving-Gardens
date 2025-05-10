@@ -12,7 +12,7 @@ import Loading from '@/components/Loading';
 import UpdateUserData from '@/api/userData';
 import Link from 'next/link';
 import SubCard from '@/components/subCard';
-import { deleteOrg } from '@/api/orgData';
+import { deleteOrg } from '../../api/orgData';
 
 const endpoint = firebaseConfig.databaseURL;
 
@@ -257,7 +257,7 @@ export default function UserComponent() {
                                   Edit
                                 </Button>
                               </Link>
-                              <Button variant="outline-danger" onClick={() => deleteOrganization(org)} className="w-100">
+                              <Button variant="outline-danger" style={{ flex: 1 }} onClick={() => deleteOrganization(org)} className="w-100">
                                 Delete
                               </Button>
                             </div>
