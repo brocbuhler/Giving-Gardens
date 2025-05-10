@@ -12,7 +12,7 @@ import Loading from '@/components/Loading';
 import UpdateUserData from '@/api/userData';
 import Link from 'next/link';
 import SubCard from '@/components/subCard';
-import { deleteOrg } from '../../api/orgData';
+import { deleteOrg } from '@/api/orgData';
 
 const endpoint = firebaseConfig.databaseURL;
 
